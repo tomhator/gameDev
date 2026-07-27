@@ -6,5 +6,6 @@
 ```
 gameDev
 ├── fisrtgame
-└── Dodge the Creeps
+├── Dodge the Creeps
+└── docs            # 프로젝트 기획 문서
 ```
