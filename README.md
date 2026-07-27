@@ -6,5 +6,7 @@
 ```
 gameDev
 ├── fisrtgame
-└── Dodge the Creeps
+├── Dodge the Creeps
+├── helldiver-lite  # 솔로 헬다이버즈-라이트 (탑다운 슈터 로그라이트) — 진행 중
+└── docs            # 프로젝트 기획 문서
 ```
