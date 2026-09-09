@@ -6,6 +6,7 @@
 # 하는 일:
 #   1. ISSUE_TEMPLATE/  → <대상>/.github/ISSUE_TEMPLATE/   (덮어씀)
 #   2. workflows/       → <대상>/.github/workflows/        (덮어씀)
+#   2b. dashboard/      → <대상>/.github/ticket-kit/dashboard/ (덮어씀) + ticket-dashboard.json 골격
 #   3. CLAUDE.snippet.md → <대상>/CLAUDE.md 의 마커 블록 안에 삽입/교체
 #   4. labels.json (+ <대상>/.github/ticket-labels.local.json 이 있으면 추가) → GitHub 라벨 생성/갱신
 #      인증: gh CLI 가 있으면 gh, 없으면 GITHUB_TOKEN 또는 GH_TOKEN 으로 curl
@@ -30,7 +31,15 @@ echo "== ticket-kit → $TARGET ($SLUG)"
 mkdir -p "$TARGET/.github/ISSUE_TEMPLATE" "$TARGET/.github/workflows"
 cp "$KIT_DIR"/ISSUE_TEMPLATE/* "$TARGET/.github/ISSUE_TEMPLATE/"
 cp "$KIT_DIR"/workflows/* "$TARGET/.github/workflows/"
-echo "-- 이슈 템플릿 $(ls "$KIT_DIR"/ISSUE_TEMPLATE/[0-9]*.yml | wc -l)개, 워크플로우 $(ls "$KIT_DIR"/workflows/* | wc -l)개 복사"
+mkdir -p "$TARGET/.github/ticket-kit/dashboard"
+cp "$KIT_DIR"/dashboard/build_dashboard.py "$KIT_DIR"/dashboard/template.html "$TARGET/.github/ticket-kit/dashboard/"
+echo "-- 이슈 템플릿 $(ls "$KIT_DIR"/ISSUE_TEMPLATE/[0-9]*.yml | wc -l)개, 워크플로우 $(ls "$KIT_DIR"/workflows/* | wc -l)개, 상황판 생성기 복사"
+if [[ ! -f "$TARGET/.github/ticket-dashboard.json" ]]; then
+  repo_name="${SLUG#*/}"
+  printf '{\n  "title": "%s 상황판",\n  "artifact_url": "",\n  "projects": []\n}\n' "$repo_name" > "$TARGET/.github/ticket-dashboard.json"
+  echo "-- .github/ticket-dashboard.json 골격 생성 (projects 비어 있음 = 저장소 전체를 카드 하나로)"
+fi
+grep -qxF '.github/ticket-kit/dashboard/out/' "$TARGET/.gitignore" 2>/dev/null || echo '.github/ticket-kit/dashboard/out/' >> "$TARGET/.gitignore"
 
 # 3. CLAUDE.md 마커 블록
 CLAUDE_MD="$TARGET/CLAUDE.md"
