@@ -1,0 +1,20 @@
+name: "🐛 버그"
+description: "의도와 다르게 동작함"
+title: "[bug] "
+labels: ["bug", "needs-claude"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: 무슨 일이 일어났나
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 원래는 어때야 하나
+  - type: input
+    id: repro
+    attributes:
+      label: 재현 방법 (선택)
+      placeholder: "예: 재배치 모드에서 Enter 두 번"

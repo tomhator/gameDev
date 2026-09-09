@@ -1,0 +1,30 @@
+# ticket-kit
+
+GitHub Issues 위에서 사람과 Claude가 서로 티켓을 던지며 일하기 위한 키트.
+여기가 원본이고, 게임 저장소마다 복사해서 붙인다.
+
+## 적용
+
+```bash
+tools/ticket-kit/apply.sh ../my-game            # origin 리모트에서 owner/repo 자동 감지
+tools/ticket-kit/apply.sh ../my-game me/my-game # 직접 지정
+```
+
+라벨 생성에는 `gh` CLI 또는 `GITHUB_TOKEN` 환경변수가 필요하다. 여러 번 실행해도 안전하다.
+적용 후 GitHub 웹에서 Projects 보드를 하나 만들고(1분), 변경된 파일을 커밋한다.
+
+## 내용물
+
+| 파일 | 역할 |
+|---|---|
+| `labels.json` | 라벨 정의. 코트 2개 + 종류 7개 |
+| `ISSUE_TEMPLATE/` | 이슈 폼 7개. 종류 라벨과 코트 라벨이 자동으로 붙는다 |
+| `CLAUDE.snippet.md` | 작업 규약. 대상 저장소 CLAUDE.md에 마커 블록으로 들어간다 |
+| `workflows/ticket-court.yml` | 코트 라벨 배타 처리 + `needs-human`이면 소유자에게 자동 할당(알림) |
+| `apply.sh` | 위 전부를 대상 저장소에 적용 |
+
+저장소별로 라벨을 더 두고 싶으면 대상 저장소에 `.github/ticket-labels.local.json`을 같은 형식으로 만들어 두면 함께 적용된다.
+
+## 핵심 규칙 한 줄
+
+열린 티켓은 항상 `needs-human` 아니면 `needs-claude`. 당신 코트가 비어 있지 않으면 구경꾼이 아니다.

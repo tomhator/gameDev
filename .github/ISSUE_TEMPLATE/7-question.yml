@@ -1,0 +1,16 @@
+name: "❓ 질문"
+description: "기획 의도 확인 등. 누구나"
+title: "[question] "
+labels: ["question", "needs-claude"]
+body:
+  - type: textarea
+    id: q
+    attributes:
+      label: 질문
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: 맥락 (선택)
+      description: 어디서 막혔나

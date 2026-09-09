@@ -1,0 +1,27 @@
+name: "⚖️ 결정 요청 (Claude → 당신)"
+description: "Claude가 결정을 요청할 때. 선택지와 추천을 함께"
+title: "[decision] "
+labels: ["decision", "needs-human"]
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: 결정할 것
+    validations:
+      required: true
+  - type: textarea
+    id: options
+    attributes:
+      label: 선택지
+      description: 각 선택지의 비용과 얻는 것
+    validations:
+      required: true
+  - type: textarea
+    id: recommend
+    attributes:
+      label: Claude 추천과 이유
+  - type: input
+    id: deadline
+    attributes:
+      label: 언제까지 (선택)
+      placeholder: "예: 이 결정 전에는 튜닝 티켓 진행 불가"
