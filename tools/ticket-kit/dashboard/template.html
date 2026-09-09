@@ -1,4 +1,4 @@
-<title>gameDev 상황판</title>
+<title>__TITLE__</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Do+Hyeon&display=swap">
 <style>
 :root{
@@ -42,12 +42,13 @@ section{margin:0 0 36px}
 .rows{background:var(--surface);border:1px solid var(--line)}
 .row{display:grid;grid-template-columns:52px 1fr auto;gap:12px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line-soft)}
 .row:last-child{border-bottom:0}
+.row>span{min-width:0}
 .row .n{font-family:var(--mono);font-size:12px;color:var(--muted)}
 .row .t{font-weight:500}
 .row .meta{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:3px}
 .row .age{font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap}
 .empty{padding:16px 14px;color:var(--muted);font-size:13px}
-.chip{font-family:var(--mono);font-size:10.5px;padding:1px 7px;border-radius:999px;border:1px solid var(--line);background:var(--bg);white-space:nowrap}
+.chip{font-family:var(--mono);font-size:10.5px;padding:1px 7px;border-radius:999px;border:1px solid var(--line);background:var(--bg);max-width:100%;overflow-wrap:anywhere}
 .chip.h{border-color:var(--human);color:var(--human);background:var(--human-soft)}
 .chip.c{border-color:var(--claude);color:var(--claude);background:var(--claude-soft)}
 .chip.p{border-style:dashed}
@@ -55,13 +56,13 @@ section{margin:0 0 36px}
 .row.hot .t::before{content:"★ ";color:var(--human)}
 /* project cards */
 .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.card{background:var(--surface);border:1px solid var(--line);padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);padding:16px 18px;display:flex;flex-direction:column;gap:12px;min-width:0}
 .card.parked{opacity:.72}
 .card .head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
 .card h3{margin:0;font-size:17px;font-weight:600;font-family:var(--mono)}
 .card .desc{color:var(--muted);font-size:12.5px;margin-top:2px}
-.stage{font-size:11px;padding:2px 8px;border-radius:2px;background:var(--line-soft);color:var(--muted);white-space:nowrap}
-.counts{display:flex;gap:14px;font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.stage{font-size:11px;padding:2px 8px;border-radius:2px;background:var(--line-soft);color:var(--muted);text-align:right}
+.counts{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
 .counts b{font-weight:600;color:var(--ink)} .counts .h b{color:var(--human)} .counts .c b{color:var(--claude)}
 .ms{display:flex;flex-direction:column;gap:6px}
 .ms .one{display:grid;grid-template-columns:1fr auto;gap:8px;font-size:12px;align-items:center}
@@ -78,109 +79,14 @@ footer{margin-top:40px;font-size:12.5px;color:var(--muted);border-top:1px solid 
 </style>
 <main>
   <header>
-    <div><h1 id="title"></h1><div class="snap" id="snap"></div></div>
-    <nav class="links" id="links"></nav>
+    <div><h1>__TITLE__</h1><div class="snap">__SNAP__</div></div>
+    <nav class="links">__LINKS__</nav>
   </header>
-  <div class="strip" id="strip"></div>
-  <section><p class="eyebrow">당신 코트 · 지금 할 일 <span class="cnt" id="cnt-h"></span></p><div class="rows" id="human"></div></section>
-  <section><p class="eyebrow">프로젝트</p><div class="cards" id="cards"></div></section>
-  <section><p class="eyebrow">Claude 코트 · 진행 중 <span class="cnt" id="cnt-c"></span></p><div class="rows" id="claude"></div></section>
-  <section><p class="eyebrow">최근 닫힘 <span class="cnt" id="cnt-d"></span></p><div class="rows" id="done"></div></section>
-  <footer id="foot"></footer>
+  <div class="strip">__STRIP__</div>
+  <section><p class="eyebrow">당신 코트 · 지금 할 일 <span class="cnt">__CNT_H__</span></p><div class="rows">__HUMAN__</div></section>
+  <section><p class="eyebrow">프로젝트</p><div class="cards">__CARDS__</div></section>
+  <section><p class="eyebrow">Claude 코트 · 진행 중 <span class="cnt">__CNT_C__</span></p><div class="rows">__CLAUDE__</div></section>
+  <section><p class="eyebrow">최근 닫힘 <span class="cnt">__CNT_D__</span></p><div class="rows">__DONE__</div></section>
+  <footer>__FOOT__</footer>
 </main>
 <script id="data" type="application/json">__DATA__</script>
-<script>
-const D = JSON.parse(document.getElementById('data').textContent);
-const $ = id => document.getElementById(id);
-const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const KIND_ICON = {idea:'💡', bug:'🐛', tuning:'🎚', feature:'🧩', decision:'⚖️', playtest:'🎮', question:'❓'};
-const HOT = {decision: 0, playtest: 1, question: 2};
-const projLabels = D.projects.map(p => p.label).filter(Boolean);
-const projOf = i => i.labels.find(l => projLabels.includes(l)) || null;
-
-function ago(iso){
-  const ms = Date.now() - new Date(iso).getTime(), m = Math.round(ms/60000), h = Math.round(m/60), d = Math.round(h/24);
-  if (m < 60) return `${Math.max(m,1)}분 전`; if (h < 48) return `${h}시간 전`; return `${d}일 전`;
-}
-function fmtSnap(iso){
-  const t = new Date(iso);
-  return `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,'0')}-${String(t.getDate()).padStart(2,'0')} ${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')} 기준 스냅샷 · ${ago(iso)} 갱신`;
-}
-function chips(i, withProject=true){
-  let h = '';
-  if (i.kind) h += `<span class="chip">${KIND_ICON[i.kind]||''} ${i.kind}</span>`;
-  const p = projOf(i); if (withProject && p) h += `<span class="chip p">${esc(p)}</span>`;
-  if (i.milestone) h += `<span class="chip ms">${esc(i.milestone)}</span>`;
-  if (i.comments) h += `<span class="chip ms">💬 ${i.comments}</span>`;
-  return h;
-}
-function rows(el, list, opts={}){
-  if (!list.length){ el.innerHTML = `<div class="empty">${opts.empty || '없음'}</div>`; return; }
-  el.innerHTML = list.map(i => `<a class="row ${opts.hot && i.kind in HOT ? 'hot':''}" href="${i.url}" target="_blank" rel="noopener">
-    <span class="n">#${i.n}</span>
-    <span><div class="t">${esc(i.title)}</div><div class="meta">${chips(i)}</div></span>
-    <span class="age">${opts.closed ? '닫힘 ' + ago(i.closed) : ago(i.updated)}</span></a>`).join('');
-}
-function newIssueUrl(form, projLabel){
-  const labels = [...form.labels]; if (projLabel) labels.push(projLabel);
-  const title = form.title + (projLabel ? projLabel + ': ' : '');
-  const q = new URLSearchParams({template: form.file, labels: labels.join(','), title});
-  return `https://github.com/${D.repo}/issues/new?${q}`;
-}
-function throwRow(projLabel){
-  return `<div class="throw"><span>티켓 던지기</span>` + D.forms.map(f => {
-    const court = f.labels.includes('needs-human') ? 'h' : 'c';
-    const short = f.name.replace(/\s*\(.*\)\s*$/, '');
-    return `<a class="btn ${court}" href="${newIssueUrl(f, projLabel)}" target="_blank" rel="noopener" title="${esc(f.name)}">${esc(short)}</a>`;
-  }).join('') + `</div>`;
-}
-
-// header
-$('title').textContent = D.title; document.title = D.title;
-$('snap').textContent = fmtSnap(D.snapshot);
-$('links').innerHTML = [
-  [`https://github.com/${D.repo}/issues/assigned/@me`, 'Assigned to me'],
-  [`https://github.com/${D.repo}/issues`, '모든 이슈'],
-  [`https://github.com/${D.repo}/projects`, 'Projects 보드'],
-  [`https://github.com/${D.repo}/milestones`, '마일스톤'],
-].map(([u,t]) => `<a href="${u}" target="_blank" rel="noopener">${t}</a>`).join('');
-
-// lists
-const open = D.issues.filter(i => i.state === 'open');
-const human = open.filter(i => i.court === 'needs-human').sort((a,b) => (HOT[a.kind]??9)-(HOT[b.kind]??9) || a.updated.localeCompare(b.updated));
-const claude = open.filter(i => i.court === 'needs-claude').sort((a,b) => b.updated.localeCompare(a.updated));
-const orphan = open.filter(i => !i.court);
-const done = D.issues.filter(i => i.state === 'closed').sort((a,b) => (b.closed||'').localeCompare(a.closed||'')).slice(0,10);
-const week = Date.now() - 7*86400e3;
-$('strip').innerHTML = `
-  <div class="stat h"><b>${human.length}</b><small>당신 코트</small></div>
-  <div class="stat c"><b>${claude.length}</b><small>Claude 코트</small></div>
-  <div class="stat"><b>${open.length}</b><small>열린 티켓 전체${orphan.length ? ` · 코트 없음 ${orphan.length}` : ''}</small></div>
-  <div class="stat d"><b>${D.issues.filter(i => i.closed && new Date(i.closed).getTime() > week).length}</b><small>이번 주 닫힘</small></div>`;
-$('cnt-h').textContent = human.length; $('cnt-c').textContent = claude.length; $('cnt-d').textContent = done.length;
-rows($('human'), human, {hot:true, empty:'비어 있음. 구경꾼 모드 — Claude가 곧 뭔가 던질 것'});
-rows($('claude'), claude, {empty:'비어 있음. 티켓을 던져 주세요'});
-rows($('done'), done, {closed:true, empty:'아직 닫힌 티켓 없음'});
-
-// project cards
-$('cards').innerHTML = D.projects.map(p => {
-  const mine = p.label ? open.filter(i => i.labels.includes(p.label)) : open;
-  const all = p.label ? D.issues.filter(i => i.labels.includes(p.label)) : D.issues;
-  const h = mine.filter(i => i.court === 'needs-human').length, c = mine.filter(i => i.court === 'needs-claude').length;
-  const ms = D.milestones.filter(m => !p.label || m.title.startsWith(p.label + ':') || m.title.startsWith(p.label + ' '));
-  const last = all.map(i => i.updated).sort().pop();
-  const parked = /보류/.test(p.stage || '');
-  const msHtml = ms.length ? ms.map(m => { const tot = m.open + m.closed, pct = tot ? Math.round(m.closed/tot*100) : 0;
-      return `<div class="one"><a href="${m.url}" target="_blank" rel="noopener">${esc(m.title.replace(p.label + ':', '').trim())}</a><span>${m.closed}/${tot} · ${pct}%</span><div class="bar"><i style="width:${pct}%"></i></div></div>`; }).join('')
-    : `<div class="none">마일스톤 없음</div>`;
-  return `<div class="card ${parked ? 'parked':''}">
-    <div class="head"><div><h3>${esc(p.name)}</h3><div class="desc">${esc(p.desc||'')}</div></div><span class="stage">${esc(p.stage||'')}</span></div>
-    <div class="counts"><span class="h"><b>${h}</b> 당신</span><span class="c"><b>${c}</b> Claude</span><span><b>${mine.length}</b> 열림</span><span><b>${all.length - mine.length}</b> 닫힘</span></div>
-    <div class="ms">${msHtml}</div>
-    <div class="last">마지막 움직임 ${last ? ago(last) : '없음'}</div>
-    ${throwRow(p.label)}
-  </div>`;
-}).join('');
-
-$('foot').innerHTML = `이 화면은 Claude가 세션을 시작하고 끝낼 때 GitHub에서 다시 읽어 갱신합니다. 그 사이의 변화는 <a href="https://github.com/${D.repo}/issues" target="_blank" rel="noopener"><u>GitHub 이슈</u></a>가 정확합니다. "티켓 던지기" 버튼은 GitHub 이슈 폼을 템플릿·라벨이 채워진 채로 엽니다. 주황 테두리는 당신 코트로, 파랑 테두리는 Claude 코트로 가는 티켓입니다.`;
-</script>
