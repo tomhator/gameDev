@@ -1,0 +1,25 @@
+name: "🧩 기능"
+description: "만들기로 정한 것. 스코프 헌법 확인 후"
+title: "[feature] "
+labels: ["feature", "needs-claude"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: 뭘 만드나
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: 완료 조건
+      description: 이게 되면 닫는다
+    validations:
+      required: true
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: 스코프 확인
+      options:
+        - label: 기획 문서의 수입 금지 목록에 걸리지 않음
+        - label: 상한(적/무기/맵 개수 등) 안에 있음

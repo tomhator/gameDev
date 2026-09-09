@@ -1,0 +1,17 @@
+name: "🎚 튜닝"
+description: "수치나 체감 조정. 플레이하다 느낀 것"
+title: "[tuning] "
+labels: ["tuning", "needs-claude"]
+body:
+  - type: textarea
+    id: feel
+    attributes:
+      label: 체감
+      description: 뭐가 답답했나 / 뭐가 너무 쉬웠나
+    validations:
+      required: true
+  - type: input
+    id: guess
+    attributes:
+      label: 짐작 (선택)
+      placeholder: "예: 배터리 30초가 짧은 듯, 40초?"

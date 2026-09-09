@@ -1,0 +1,41 @@
+# ticket-kit: 코트 라벨 관리
+# - needs-human / needs-claude 는 서로 배타적 (하나 붙이면 다른 하나 자동 제거)
+# - needs-human 이 붙으면 저장소 소유자에게 할당 → 폰 알림 + "Assigned to me" 필터가 곧 내 할 일
+# - needs-claude 로 넘어가면 할당 해제
+name: ticket-court
+on:
+  issues:
+    types: [labeled, opened]
+permissions:
+  issues: write
+jobs:
+  court:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const {owner, repo} = context.repo;
+            const issue = context.payload.issue;
+            const number = issue.number;
+            const labels = issue.labels.map(l => l.name);
+            const added = context.payload.label ? context.payload.label.name : null;
+
+            const HUMAN = 'needs-human', CLAUDE = 'needs-claude';
+            const has = n => labels.includes(n);
+            const rm = async n => { if (has(n)) await github.rest.issues.removeLabel({owner, repo, issue_number: number, name: n}).catch(() => {}); };
+
+            let court = null;
+            if (added === HUMAN || (context.payload.action === 'opened' && has(HUMAN) && !has(CLAUDE))) court = HUMAN;
+            if (added === CLAUDE || (context.payload.action === 'opened' && has(CLAUDE) && !has(HUMAN))) court = CLAUDE;
+            if (!court) return;
+
+            if (court === HUMAN) {
+              await rm(CLAUDE);
+              await github.rest.issues.addAssignees({owner, repo, issue_number: number, assignees: [owner]}).catch(() => {});
+            } else {
+              await rm(HUMAN);
+              const assigned = issue.assignees.map(a => a.login);
+              if (assigned.includes(owner))
+                await github.rest.issues.removeAssignees({owner, repo, issue_number: number, assignees: [owner]}).catch(() => {});
+            }

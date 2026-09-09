@@ -1,0 +1,30 @@
+{
+  "title": "gameDev 상황판",
+  "artifact_url": "https://claude.ai/code/artifact/8f067610-5d4e-4d6a-8a08-b9fd59d864a9",
+  "projects": [
+    {
+      "label": "helldiver-lite",
+      "name": "helldiver-lite",
+      "desc": "솔로 헬다이버즈-라이트 · 탑다운 슈터 로그라이트",
+      "stage": "그레이박스 · 첫 플레이 대기"
+    },
+    {
+      "label": "drill-guard",
+      "name": "drill-guard",
+      "desc": "식민 행성 채굴 디펜스 · 인크리멘탈 × 디펜스",
+      "stage": "그레이박스 · 첫 플레이 대기"
+    },
+    {
+      "label": "jigsaw-snap",
+      "name": "jigsaw-snap",
+      "desc": "직소 손맛 토이 · 검증기",
+      "stage": "보류"
+    },
+    {
+      "label": "ticket-kit",
+      "name": "ticket-kit",
+      "desc": "티켓 운영 키트 · 이 상황판 포함",
+      "stage": "툴"
+    }
+  ]
+}

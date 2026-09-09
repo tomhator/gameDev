@@ -10,5 +10,11 @@ gameDev
 ├── helldiver-lite  # 솔로 헬다이버즈-라이트 (탑다운 슈터 로그라이트) — 진행 중
 ├── jigsaw-snap     # 직소 손맛 토이 (프로토타입/검증기) — 보류
 ├── drill-guard     # 식민 행성 채굴 디펜스 (인크리멘탈 × 디펜스) — 그레이박스
-└── docs            # 프로젝트 기획 문서
+├── docs            # 프로젝트 기획 문서
+└── tools/ticket-kit # 티켓 운영 키트 — 게임 저장소마다 apply.sh 로 복사해 붙임
 ```
+
+## 작업 방식
+- 태스크는 GitHub Issues 티켓으로 관리한다. 규약은 `CLAUDE.md`, 키트는 `tools/ticket-kit/README.md`.
+- 열린 티켓은 항상 `needs-human`(당신 차례) 아니면 `needs-claude`(Claude 차례).
+- 당신 할 일 = [Assigned to me](https://github.com/tomhator/gameDev/issues/assigned/@me)

@@ -1,0 +1,24 @@
+name: "🎮 플레이 요청 (Claude → 당신)"
+description: "Claude가 플레이를 요청할 때. 뭘 보고 뭘 보고할지 명시"
+title: "[playtest] "
+labels: ["playtest", "needs-human"]
+body:
+  - type: textarea
+    id: check
+    attributes:
+      label: 확인할 것
+      description: 이번 플레이에서 답해야 할 질문. 3개 이하
+    validations:
+      required: true
+  - type: input
+    id: numbers
+    attributes:
+      label: 현재 수치
+      placeholder: "예: 커서 8dps, 용병 6dps, 배터리 30초"
+  - type: textarea
+    id: report
+    attributes:
+      label: 보고 형식
+      description: 몇 판, 어떤 형식으로 댓글 남길지
+    validations:
+      required: true
