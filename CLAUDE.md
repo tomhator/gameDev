@@ -1,6 +1,5 @@
-
 <!-- ticket-kit:start -->
-## 티켓 규약 (ticket-kit)
+## 티켓 규약 (ticket-kit v1.2.0)
 
 이 저장소의 작업은 GitHub Issues 티켓으로 관리한다. 규칙은 짧고, 예외는 없다.
 
@@ -10,7 +9,8 @@
 - `.github/workflows/ticket-court.yml` — `needs-human`/`needs-claude`를 서로 배타로 유지하고, `needs-human`이면 저장소 소유자에게 자동 할당한다(알림).
 - `.github/ticket-kit/dashboard/` — 상황판 생성기. 세션 시작·끝에 실행해 아티팩트로 발행한다.
 - `.github/ticket-dashboard.json` — 상황판 설정(프로젝트 카드, 발행된 아티팩트 URL).
-- 라벨은 GitHub 저장소에 이미 만들어져 있다. 원본 키트는 `tomhator/gameDev`의 `tools/ticket-kit/`.
+- `.github/ticket-kit/VERSION`, `update.sh` — 설치된 키트 버전과 업데이트 스크립트.
+- 라벨은 GitHub 저장소에 이미 만들어져 있다. 원본 키트는 `tomhator/gameDev`의 `tools/ticket-kit/` (공개). 변경 내역은 그곳의 `CHANGELOG.md`.
 
 ### 이슈를 읽고 쓰는 방법
 환경에 따라 되는 수단이 다르다. 위에서부터 시도한다.
@@ -27,7 +27,7 @@ GitHub에 남기는 모든 댓글은 Claude가 쓴 것임을 알 수 있게 끝�
 - `needs-human`이 붙으면 저장소 소유자에게 자동 할당된다. GitHub의 "Assigned to me"가 곧 당신의 할 일 목록이다.
 
 ### Claude가 지켜야 할 것
-1. **세션 시작:** 열린 이슈를 전부 읽는다. `needs-claude` 목록이 오늘 할 일이다. STATUS.md는 그 다음에 읽는다. 사람이 `needs-human` 티켓에 댓글을 남겼으면 그 답부터 처리한다. 첫 마디는 "지금 티켓 상황"이다.
+1. **세션 시작:** 첫 줄에 키트 버전(`.github/ticket-kit/VERSION`)을 한 번 말한다. 열린 이슈를 전부 읽는다. `needs-claude` 목록이 오늘 할 일이다. STATUS.md는 그 다음에 읽는다. 사람이 `needs-human` 티켓에 댓글을 남겼으면 그 답부터 처리한다. 첫 마디는 "지금 티켓 상황"이다.
 2. **티켓 없이 코드를 바꾸지 않는다.** 오타 수정 같은 사소한 것만 예외. 하고 싶은 작업이 있으면 `feature`/`tuning` 티켓을 열고 `needs-human`으로 승인을 받는다. 사람이 채팅으로 요청한 작업도 티켓을 먼저 연다(채팅 요청 = 승인이므로 `needs-claude`로).
 3. **크기 판단:** `needs-claude` 티켓이라도 반나절을 넘기거나 기획 방향을 건드리면, 바로 만들지 않고 계획과 비용을 댓글로 적은 뒤 `needs-human`으로 넘겨 승인을 받는다. 작으면 그냥 한다.
 4. **티켓 하나에 브랜치 하나.** 커밋 메시지에 `#번호`를 넣고, 마무리 커밋에는 `closes #번호`를 넣는다. 세션이 브랜치를 하나로 고정해 두었다면 그 브랜치를 쓰되, 커밋 메시지의 `#번호`는 지킨다.
@@ -50,6 +50,12 @@ GitHub 이슈는 마크다운만 렌더링한다. HTML의 스타일·스크립�
 - **이미지는 저장소에.** `.github/ticket-assets/<이슈번호>-<이름>.png|svg`로 커밋하고 raw URL로 넣는다. 이슈 첨부 업로드는 API로 안 된다.
 - **댓글도 같은 규칙.** 상태 변화는 `전 → 후` 한 줄, 결과 보고는 완료 조건 체크리스트를 체크해서 인용.
 - 사람이 던지는 티켓에는 적용하지 않는다. 한 줄이면 충분하고, 다듬는 건 Claude가 댓글로 한다.
+
+### 키트 업데이트
+- 사람이 "키트 업데이트"라고 하면 `.github/ticket-kit/update.sh`를 실행한다. gameDev master의 최신 키트를 받아 템플릿·워크플로우·상황판 생성기·이 규약 블록을 교체하고 `전 → 후` 버전을 출력한다. 결과를 `git diff`로 보여주고 커밋한다.
+- 규약 블록 밖의 CLAUDE.md 내용은 건드리지 않는다. 이 저장소만의 규칙은 블록 밖에 적는다.
+- 라벨 생성은 `gh` 또는 `GITHUB_TOKEN`이 있을 때만 된다. 없으면 건너뛰었다고 말한다.
+- 규약을 고치고 싶은 건 이 저장소가 아니라 원본(gameDev)에 `feature` 티켓으로 던진다. 여기서 블록을 직접 고치면 다음 업데이트 때 덮인다.
 
 ### 당신(사람)이 지켜야 할 것
 - 아이디어는 다듬지 말고 템플릿으로 던진다. 한 줄이면 된다. 다듬는 건 Claude가 댓글로 한다.

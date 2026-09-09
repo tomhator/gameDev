@@ -6,7 +6,7 @@
 # 하는 일:
 #   1. ISSUE_TEMPLATE/  → <대상>/.github/ISSUE_TEMPLATE/   (덮어씀)
 #   2. workflows/       → <대상>/.github/workflows/        (덮어씀)
-#   2b. dashboard/      → <대상>/.github/ticket-kit/dashboard/ (덮어씀) + ticket-dashboard.json 골격
+#   2b. dashboard/, update.sh, VERSION → <대상>/.github/ticket-kit/ (덮어씀) + ticket-dashboard.json 골격
 #   3. CLAUDE.snippet.md → <대상>/CLAUDE.md 의 마커 블록 안에 삽입/교체
 #   4. labels.json (+ <대상>/.github/ticket-labels.local.json 이 있으면 추가) → GitHub 라벨 생성/갱신
 #      인증: gh CLI 가 있으면 gh, 없으면 GITHUB_TOKEN 또는 GH_TOKEN 으로 curl
@@ -33,7 +33,10 @@ cp "$KIT_DIR"/ISSUE_TEMPLATE/* "$TARGET/.github/ISSUE_TEMPLATE/"
 cp "$KIT_DIR"/workflows/* "$TARGET/.github/workflows/"
 mkdir -p "$TARGET/.github/ticket-kit/dashboard"
 cp "$KIT_DIR"/dashboard/build_dashboard.py "$KIT_DIR"/dashboard/template.html "$TARGET/.github/ticket-kit/dashboard/"
-echo "-- 이슈 템플릿 $(ls "$KIT_DIR"/ISSUE_TEMPLATE/[0-9]*.yml | wc -l)개, 워크플로우 $(ls "$KIT_DIR"/workflows/* | wc -l)개, 상황판 생성기 복사"
+cp "$KIT_DIR"/update.sh "$TARGET/.github/ticket-kit/update.sh"; chmod +x "$TARGET/.github/ticket-kit/update.sh"
+cp "$KIT_DIR"/VERSION "$TARGET/.github/ticket-kit/VERSION"
+KIT_VERSION="$(cat "$KIT_DIR/VERSION")"
+echo "-- v$KIT_VERSION: 이슈 템플릿 $(ls "$KIT_DIR"/ISSUE_TEMPLATE/[0-9]*.yml | wc -l)개, 워크플로우 $(ls "$KIT_DIR"/workflows/* | wc -l)개, 상황판 생성기, update.sh 복사"
 if [[ ! -f "$TARGET/.github/ticket-dashboard.json" ]]; then
   repo_name="${SLUG#*/}"
   printf '{\n  "title": "%s 상황판",\n  "artifact_url": "",\n  "projects": []\n}\n' "$repo_name" > "$TARGET/.github/ticket-dashboard.json"
@@ -41,12 +44,14 @@ if [[ ! -f "$TARGET/.github/ticket-dashboard.json" ]]; then
 fi
 grep -qxF '.github/ticket-kit/dashboard/out/' "$TARGET/.gitignore" 2>/dev/null || echo '.github/ticket-kit/dashboard/out/' >> "$TARGET/.gitignore"
 
-# 3. CLAUDE.md 마커 블록
+# 3. CLAUDE.md 마커 블록 (스니펫의 {{VERSION}} 치환)
+SNIPPET="$(mktemp)"; trap 'rm -f "$SNIPPET"' EXIT
+sed "s/{{VERSION}}/$KIT_VERSION/g" "$KIT_DIR/CLAUDE.snippet.md" > "$SNIPPET"
 CLAUDE_MD="$TARGET/CLAUDE.md"
 START='<!-- ticket-kit:start -->'
 END='<!-- ticket-kit:end -->'
 if [[ -f "$CLAUDE_MD" ]] && grep -qF "$START" "$CLAUDE_MD"; then
-  python3 - "$CLAUDE_MD" "$KIT_DIR/CLAUDE.snippet.md" "$START" "$END" <<'PY'
+  python3 - "$CLAUDE_MD" "$SNIPPET" "$START" "$END" <<'PY'
 import sys, re
 path, snippet_path, start, end = sys.argv[1:]
 text = open(path, encoding="utf-8").read()
@@ -57,7 +62,7 @@ open(path, "w", encoding="utf-8").write(text)
 PY
   echo "-- CLAUDE.md 규약 블록 교체"
 else
-  { [[ -f "$CLAUDE_MD" ]] && printf '\n'; cat "$KIT_DIR/CLAUDE.snippet.md"; } >> "$CLAUDE_MD"
+  { [[ -s "$CLAUDE_MD" ]] && printf '\n'; cat "$SNIPPET"; } >> "$CLAUDE_MD"
   echo "-- CLAUDE.md 규약 블록 추가"
 fi
 
