@@ -22,6 +22,17 @@ tools/ticket-kit/apply.sh ../my-game me/my-game # 직접 지정
 | `CLAUDE.snippet.md` | 작업 규약. 대상 저장소 CLAUDE.md에 마커 블록으로 들어간다 |
 | `workflows/ticket-court.yml` | 코트 라벨 배타 처리 + `needs-human`이면 소유자에게 자동 할당(알림) |
 | `apply.sh` | 위 전부를 대상 저장소에 적용 |
+| `dashboard/` | 상황판 생성기. `build_dashboard.py <저장소>` 가 GitHub API를 읽어 HTML을 만들고, Claude가 아티팩트로 발행한다 |
+
+## 상황판
+
+```bash
+tools/ticket-kit/dashboard/build_dashboard.py ../my-game   # → dashboard/out/<owner>-<repo>.html
+```
+
+대상 저장소의 `.github/ticket-dashboard.json`에 제목, 프로젝트 카드(라벨·이름·설명·단계), 발행된 아티팩트 URL을 둔다.
+파일이 없으면 저장소 전체를 프로젝트 하나로 그린다. 마일스톤 제목을 `<프로젝트 라벨>: …` 형식으로 지으면 해당 카드에 진행률로 붙는다.
+Claude는 규약에 따라 세션 시작·끝에 이 화면을 같은 URL로 재발행한다. 화면의 "티켓 던지기" 버튼은 GitHub 이슈 폼을 템플릿·라벨 프리필로 연다.
 
 저장소별로 라벨을 더 두고 싶으면 대상 저장소에 `.github/ticket-labels.local.json`을 같은 형식으로 만들어 두면 함께 적용된다.
 
