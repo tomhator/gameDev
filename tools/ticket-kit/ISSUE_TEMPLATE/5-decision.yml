@@ -13,6 +13,11 @@ body:
     id: options
     attributes:
       label: 선택지
+      value: |
+        | 선택지 | 비용 | 얻는 것 | 리스크 |
+        |---|---|---|---|
+        | A. | | | |
+        | B. | | | |
       description: 각 선택지의 비용과 얻는 것
     validations:
       required: true
@@ -20,6 +25,9 @@ body:
     id: recommend
     attributes:
       label: Claude 추천과 이유
+      value: |
+        > [!TIP]
+        > **추천:** A. 이유:
   - type: input
     id: deadline
     attributes:

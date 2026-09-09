@@ -13,6 +13,9 @@ body:
     id: done
     attributes:
       label: 완료 조건
+      value: |
+        - [ ] 
+        - [ ] 
       description: 이게 되면 닫는다
     validations:
       required: true
