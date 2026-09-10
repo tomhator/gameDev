@@ -3,6 +3,10 @@
 버전 규칙: 메이저 = 사람의 행동이 달라지는 규약 변경(라벨 이름, 코트 규칙) · 마이너 = 규약 절 추가, 폼·워크플로우·상황판 기능 추가 · 패치 = 버그 수정, 문구.
 프로젝트 저장소에서 올리는 법: 세션에 "키트 업데이트해줘" 또는 `.github/ticket-kit/update.sh`.
 
+## 1.4.0 — 2026-09-10
+- `apply.sh`가 `CLAUDE_CODE_OAUTH_TOKEN` 시크릿을 등록(gh + 환경변수). 없으면 등록 명령이나 웹 URL 안내 (#24)
+- README에 새 저장소 세팅 3줄
+
 ## 1.3.0 — 2026-09-10
 - `workflows/claude.yml`: 이슈·PR 댓글(또는 새 이슈 본문)의 `@claude` 멘션이 Claude Code 세션을 호출 (Claude Code GitHub Action). 앱 설치와 `CLAUDE_CODE_OAUTH_TOKEN` 시크릿은 사람이 한 번 (#22)
 - 규약: "@claude 멘션 = 세션 호출", 키트 설명에 워크플로우 추가
