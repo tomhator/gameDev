@@ -7,6 +7,7 @@
 #   1. ISSUE_TEMPLATE/  → <대상>/.github/ISSUE_TEMPLATE/   (덮어씀)
 #   2. workflows/       → <대상>/.github/workflows/        (덮어씀)
 #   2b. dashboard/      → <대상>/.github/ticket-kit/dashboard/ (덮어씀) + ticket-dashboard.json 골격
+#   2c. templates/      → <대상>/docs/templates/ (덮어씀) — 헌법·플레이 노트·팔레트
 #   3. CLAUDE.snippet.md → <대상>/CLAUDE.md 의 마커 블록 안에 삽입/교체
 #   4. labels.json (+ <대상>/.github/ticket-labels.local.json 이 있으면 추가) → GitHub 라벨 생성/갱신
 #      인증: gh CLI 가 있으면 gh, 없으면 GITHUB_TOKEN 또는 GH_TOKEN 으로 curl
@@ -39,6 +40,9 @@ if [[ ! -f "$TARGET/.github/ticket-dashboard.json" ]]; then
   printf '{\n  "title": "%s 상황판",\n  "artifact_url": "",\n  "projects": []\n}\n' "$repo_name" > "$TARGET/.github/ticket-dashboard.json"
   echo "-- .github/ticket-dashboard.json 골격 생성 (projects 비어 있음 = 저장소 전체를 카드 하나로)"
 fi
+mkdir -p "$TARGET/docs/templates"
+cp "$KIT_DIR"/templates/* "$TARGET/docs/templates/"
+echo "-- 템플릿 $(ls "$KIT_DIR"/templates/* | wc -l)개 → docs/templates/ (헌법·플레이 노트·팔레트)"
 grep -qxF '.github/ticket-kit/dashboard/out/' "$TARGET/.gitignore" 2>/dev/null || echo '.github/ticket-kit/dashboard/out/' >> "$TARGET/.gitignore"
 
 # 3. CLAUDE.md 마커 블록

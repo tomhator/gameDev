@@ -50,3 +50,7 @@ Claude는 규약에 따라 세션 시작·끝에 이 화면을 같은 URL로 재
 ## 핵심 규칙 한 줄
 
 열린 티켓은 항상 `needs-human` 아니면 `needs-claude`. 당신 코트가 비어 있지 않으면 구경꾼이 아니다.
+
+## 개발 루프 (#20)
+
+`CLAUDE.snippet.md`의 "개발 루프" 절이 완료 정의(공개 URL + 타인 플레이)·플레이 노트 게이트·백로그 상한 5·14일 사이클·아트 8장 규칙을 담는다. `templates/`의 헌법·플레이 노트·팔레트는 `apply.sh`가 `<대상>/docs/templates/`로 복사한다. 근거는 `tomhator/gameDev/docs/knowhow.md`.
