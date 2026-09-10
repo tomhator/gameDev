@@ -1,5 +1,5 @@
 <!-- ticket-kit:start -->
-## 티켓 규약 (ticket-kit v1.2.0)
+## 티켓 규약 (ticket-kit v1.3.0)
 
 이 저장소의 작업은 GitHub Issues 티켓으로 관리한다. 규칙은 짧고, 예외는 없다.
 
@@ -7,6 +7,7 @@
 사람과 Claude가 서로 티켓을 던지며 일하기 위한 장치. 이 저장소에는 다음이 깔려 있다.
 - `.github/ISSUE_TEMPLATE/` — 이슈 폼 7종. 종류 라벨과 코트 라벨이 자동으로 붙는다.
 - `.github/workflows/ticket-court.yml` — `needs-human`/`needs-claude`를 서로 배타로 유지하고, `needs-human`이면 저장소 소유자에게 자동 할당한다(알림).
+- `.github/workflows/claude.yml` — 티켓·PR 댓글의 `@claude` 멘션이 Claude Code 세션을 호출한다. 그 세션도 이 규약을 읽는다. 시크릿 `CLAUDE_CODE_OAUTH_TOKEN`이 없으면 동작하지 않는다.
 - `.github/ticket-kit/dashboard/` — 상황판 생성기. 세션 시작·끝에 실행해 아티팩트로 발행한다.
 - `.github/ticket-dashboard.json` — 상황판 설정(프로젝트 카드, 발행된 아티팩트 URL).
 - `.github/ticket-kit/VERSION`, `update.sh` — 설치된 키트 버전과 업데이트 스크립트.
@@ -51,6 +52,11 @@ GitHub 이슈는 마크다운만 렌더링한다. HTML의 스타일·스크립�
 - **댓글도 같은 규칙.** 상태 변화는 `전 → 후` 한 줄, 결과 보고는 완료 조건 체크리스트를 체크해서 인용.
 - 사람이 던지는 티켓에는 적용하지 않는다. 한 줄이면 충분하고, 다듬는 건 Claude가 댓글로 한다.
 
+### @claude 멘션으로 불려온 세션(GitHub Action)이라면
+- 트리거된 댓글의 티켓 하나만 다룬다. 다른 `needs-claude` 티켓은 건드리지 않는다.
+- 결과는 그 티켓의 댓글로 남기고, 코드 변경은 `claude/<티켓번호>-<짧은이름>` 브랜치로 푸시한 뒤 PR을 연다. master에 직접 푸시하지 않는다.
+- 상황판 재발행(8항)은 Artifact 도구가 없으므로 건너뛴다.
+
 ### 키트 업데이트
 - 사람이 "키트 업데이트"라고 하면 `.github/ticket-kit/update.sh`를 실행한다. gameDev master의 최신 키트를 받아 템플릿·워크플로우·상황판 생성기·이 규약 블록을 교체하고 `전 → 후` 버전을 출력한다. 결과를 `git diff`로 보여주고 커밋한다.
 - 규약 블록 밖의 CLAUDE.md 내용은 건드리지 않는다. 이 저장소만의 규칙은 블록 밖에 적는다.
@@ -62,6 +68,7 @@ GitHub 이슈는 마크다운만 렌더링한다. HTML의 스타일·스크립�
 - `needs-human` 티켓에 답할 때는 댓글을 달고 라벨을 `needs-claude`로 바꾼다. 답이 "보류"여도 그렇게 적는다.
 - 승인은 당신만 한다. Claude가 스스로 승인하지 않는다.
 - 세션을 열 때는 "#번호 하자"라고 티켓을 지목한다. 지목이 없으면 Claude가 `needs-claude` 목록에서 고른다.
+- 세션을 열 필요 없이 바로 시키려면 티켓 댓글에 `@claude 진행해줘`. 그 댓글이 곧 세션 호출이다. 답만 원하면 `@claude 이거 어떻게 생각해`.
 
 ### 라벨
 - 코트: `needs-human` `needs-claude`

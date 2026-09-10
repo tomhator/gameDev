@@ -21,6 +21,7 @@ tools/ticket-kit/apply.sh ../my-game me/my-game # 직접 지정
 | `ISSUE_TEMPLATE/` | 이슈 폼 7개. 종류 라벨과 코트 라벨이 자동으로 붙는다 |
 | `CLAUDE.snippet.md` | 작업 규약. 대상 저장소 CLAUDE.md에 마커 블록으로 들어간다 |
 | `workflows/ticket-court.yml` | 코트 라벨 배타 처리 + `needs-human`이면 소유자에게 자동 할당(알림) |
+| `workflows/claude.yml` | 티켓·PR 댓글의 `@claude` 멘션 → Claude Code 세션 호출. 앱 설치 + `CLAUDE_CODE_OAUTH_TOKEN` 시크릿 필요(파일 머리말 참고) |
 | `apply.sh` | 위 전부를 대상 저장소에 적용 |
 | `update.sh` | 대상 저장소에 복사되어, 거기서 실행하면 최신 키트를 받아 재적용 |
 | `VERSION`, `CHANGELOG.md` | 키트 버전과 변경 내역 |
