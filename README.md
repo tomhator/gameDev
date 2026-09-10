@@ -11,7 +11,8 @@ gameDev
 ├── jigsaw-snap     # 직소 손맛 토이 (프로토타입/검증기) — 보류
 ├── drill-guard     # 식민 행성 채굴 디펜스 (인크리멘탈 × 디펜스) — 그레이박스
 ├── docs            # 프로젝트 기획 문서
-└── tools/ticket-kit # 티켓 운영 키트 — 게임 저장소마다 apply.sh 로 복사해 붙임
+├── tools/ticket-kit # 티켓 운영 키트 — 게임 저장소마다 apply.sh 로 복사해 붙임
+└── tools/gif-factory # 맥북 GIF 공장 — 구글 드라이브 녹화 → 홍보용 GIF 자동 생성
 ```
 
 ## 작업 방식

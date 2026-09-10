@@ -25,6 +25,12 @@
       "name": "ticket-kit",
       "desc": "티켓 운영 키트 · 이 상황판 포함",
       "stage": "툴"
+    },
+    {
+      "label": "gif-factory",
+      "name": "gif-factory",
+      "desc": "맥북 GIF 공장 · 녹화 → 홍보용 짤",
+      "stage": "툴 · 맥 설치 대기"
     }
   ]
 }
