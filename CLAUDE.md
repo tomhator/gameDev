@@ -1,5 +1,5 @@
 <!-- ticket-kit:start -->
-## 티켓 규약 (ticket-kit v1.4.0)
+## 티켓 규약 (ticket-kit v1.5.0)
 
 이 저장소의 작업은 GitHub Issues 티켓으로 관리한다. 규칙은 짧고, 예외는 없다.
 
@@ -10,7 +10,8 @@
 - `.github/workflows/claude.yml` — 티켓·PR 댓글의 `@claude` 멘션이 Claude Code 세션을 호출한다. 그 세션도 이 규약을 읽는다. 시크릿 `CLAUDE_CODE_OAUTH_TOKEN`이 없으면 동작하지 않는다.
 - `.github/ticket-kit/dashboard/` — 상황판 생성기. 세션 시작·끝에 실행해 아티팩트로 발행한다.
 - `.github/ticket-dashboard.json` — 상황판 설정(프로젝트 카드, 발행된 아티팩트 URL).
-- `.github/ticket-kit/VERSION`, `update.sh` — 설치된 키트 버전과 업데이트 스크립트.
+- `.github/workflows/ticket-kit-setup.yml` — 기본 브랜치 푸시 시 `.github/ticket-kit/labels.json` 대로 라벨을 만든다. 라벨이 없으면 Actions 탭에서 이 워크플로우를 수동 실행.
+- `.github/ticket-kit/VERSION`, `update.sh`, `labels.json` — 설치된 키트 버전, 업데이트 스크립트, 라벨 정의.
 - 라벨은 GitHub 저장소에 이미 만들어져 있다. 원본 키트는 `tomhator/gameDev`의 `tools/ticket-kit/` (공개). 변경 내역은 그곳의 `CHANGELOG.md`.
 
 ### 이슈를 읽고 쓰는 방법
