@@ -1,7 +1,7 @@
 name: "🎚 튜닝"
 description: "수치나 체감 조정. 플레이하다 느낀 것"
 title: "[tuning] "
-labels: ["tuning", "needs-claude"]
+labels: ["tuning", "stage:build", "needs-claude"]
 body:
   - type: textarea
     id: feel

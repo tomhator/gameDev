@@ -1,7 +1,7 @@
 name: "💡 아이디어"
 description: "떠오른 것. 한 줄이어도 된다. 10분 확인 방법이 없으면 열지 않는다. 프로젝트당 열린 idea 5개 상한."
 title: "[idea] "
-labels: ["idea", "needs-claude"]
+labels: ["idea", "stage:idea", "needs-claude"]
 body:
   - type: textarea
     id: what
