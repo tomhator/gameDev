@@ -10,6 +10,7 @@
 #   3. CLAUDE.snippet.md → <대상>/CLAUDE.md 의 마커 블록 안에 삽입/교체
 #   4. labels.json (+ <대상>/.github/ticket-labels.local.json 이 있으면 추가) → GitHub 라벨 생성/갱신
 #      인증: gh CLI 가 있으면 gh, 없으면 GITHUB_TOKEN 또는 GH_TOKEN 으로 curl
+#   5. gh 가 있고 환경변수 CLAUDE_CODE_OAUTH_TOKEN 이 있으면 @claude 워크플로우용 시크릿 등록 (없으면 안내만)
 #
 # owner/repo 를 생략하면 대상 저장소의 origin 리모트에서 읽는다.
 set -euo pipefail
@@ -101,4 +102,18 @@ for f in "${label_files[@]}"; do
   done < <(jq -r '.[] | [.name, .color, .description] | @tsv' "$f")
 done
 echo "-- 라벨 생성 $created, 갱신 $updated"
+
+# 5. @claude 워크플로우용 시크릿 (값은 절대 출력하지 않는다)
+SECRET_NAME="CLAUDE_CODE_OAUTH_TOKEN"
+if command -v gh >/dev/null 2>&1; then
+  if gh secret list --repo "$SLUG" 2>/dev/null | grep -q "^$SECRET_NAME"; then
+    echo "-- 시크릿 $SECRET_NAME 이미 있음"
+  elif [[ -n "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]]; then
+    gh secret set "$SECRET_NAME" --repo "$SLUG" --body "$CLAUDE_CODE_OAUTH_TOKEN" && echo "-- 시크릿 $SECRET_NAME 등록"
+  else
+    echo "-- 시크릿 $SECRET_NAME 없음. 등록: gh secret set $SECRET_NAME --repo $SLUG   (토큰은 PC에서 'claude setup-token')"
+  fi
+else
+  echo "-- 시크릿 $SECRET_NAME 은 gh 가 있어야 등록. 웹: https://github.com/$SLUG/settings/secrets/actions"
+fi
 echo "== 완료. 다음: Projects 보드는 GitHub 웹에서 만들고, 변경 파일을 커밋하세요."

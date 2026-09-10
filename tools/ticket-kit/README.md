@@ -3,6 +3,16 @@
 GitHub Issues 위에서 사람과 Claude가 서로 티켓을 던지며 일하기 위한 키트.
 여기가 원본이고, 게임 저장소마다 복사해서 붙인다.
 
+## 새 게임 저장소 세팅 (PC, 3줄)
+
+```bash
+gh repo create tomhator/새게임 --public --clone && cd 새게임          # 1. 저장소
+CLAUDE_CODE_OAUTH_TOKEN=<claude setup-token 결과> ../gameDev/tools/ticket-kit/apply.sh .   # 2. 키트 + 라벨 + 시크릿
+git add -A && git commit -m "ticket-kit 적용" && git push               # 3. 커밋
+```
+
+Claude GitHub App이 "All repositories"로 설치돼 있으면 이걸로 끝. 아니면 https://github.com/settings/installations 에서 저장소 추가.
+
 ## 적용
 
 ```bash
