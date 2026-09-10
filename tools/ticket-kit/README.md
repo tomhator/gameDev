@@ -21,7 +21,10 @@ tools/ticket-kit/apply.sh ../my-game me/my-game # 직접 지정
 | `ISSUE_TEMPLATE/` | 이슈 폼 7개. 종류 라벨과 코트 라벨이 자동으로 붙는다 |
 | `CLAUDE.snippet.md` | 작업 규약. 대상 저장소 CLAUDE.md에 마커 블록으로 들어간다 |
 | `workflows/ticket-court.yml` | 코트 라벨 배타 처리 + `needs-human`이면 소유자에게 자동 할당(알림) |
+| `workflows/claude.yml` | 티켓·PR 댓글의 `@claude` 멘션 → Claude Code 세션 호출. 앱 설치 + `CLAUDE_CODE_OAUTH_TOKEN` 시크릿 필요(파일 머리말 참고) |
 | `apply.sh` | 위 전부를 대상 저장소에 적용 |
+| `update.sh` | 대상 저장소에 복사되어, 거기서 실행하면 최신 키트를 받아 재적용 |
+| `VERSION`, `CHANGELOG.md` | 키트 버전과 변경 내역 |
 | `dashboard/` | 상황판 생성기. 대상 저장소의 `.github/ticket-kit/dashboard/`로 복사된다 |
 
 ## 상황판
@@ -41,6 +44,17 @@ Claude는 규약에 따라 세션 시작·끝에 이 화면을 같은 URL로 재
 `CLAUDE.snippet.md`가 대상 저장소의 `CLAUDE.md`에 들어가고, Claude Code는 세션마다 그 파일을 자동으로 읽는다.
 스니펫에는 키트 구성, 이슈를 읽고 쓰는 수단(MCP → gh → 토큰 API 순), 세션 루틴, 코트 규칙이 전부 들어 있다.
 그래서 새 저장소에서 세션을 열면 첫 마디가 "지금 티켓 상황"이어야 정상이다.
+
+## 업데이트와 버전
+
+키트를 받은 저장소에서는 세션에 "키트 업데이트해줘"라고 하거나 직접 실행한다.
+
+```bash
+.github/ticket-kit/update.sh        # gameDev master → 현재 저장소. '전 → 후' 버전 출력
+```
+
+설치된 버전은 `.github/ticket-kit/VERSION`과 CLAUDE.md 규약 블록 첫 줄에 있다. 변경 내역은 `CHANGELOG.md`.
+규약을 바꾸고 싶으면 원본(이 저장소)에 티켓을 던진다. 프로젝트 저장소에서 블록을 직접 고치면 다음 업데이트 때 덮인다.
 
 ## 티켓은 보는 것
 

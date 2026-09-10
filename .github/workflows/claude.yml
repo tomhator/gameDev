@@ -1,0 +1,35 @@
+# ticket-kit: @claude 멘션 → Claude Code 세션 호출
+# 티켓(이슈)이나 PR 댓글에 "@claude …" 를 쓰면 이 워크플로우가 Claude를 띄운다.
+# Claude는 저장소를 체크아웃한 상태에서 CLAUDE.md(티켓 규약)를 읽고 일한다.
+#
+# 준비(사람, 한 번):
+#   1. https://github.com/apps/claude 를 이 저장소에 설치
+#   2. PC에서 `claude setup-token` → 저장소 Settings → Secrets and variables → Actions → CLAUDE_CODE_OAUTH_TOKEN
+#      (구독 대신 API 키로 쓰려면 아래 claude_code_oauth_token 줄을 anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }} 로)
+name: claude
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  issues:
+    types: [opened]
+jobs:
+  claude:
+    if: >-
+      (github.event_name == 'issues' && contains(github.event.issue.body, '@claude')) ||
+      (github.event_name != 'issues' && contains(github.event.comment.body, '@claude'))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
