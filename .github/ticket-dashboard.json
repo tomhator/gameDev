@@ -9,12 +9,6 @@
       "stage": "별도 저장소에서 개발 중 (이 폴더는 8/10 스냅샷)"
     },
     {
-      "label": "jigsaw-snap",
-      "name": "jigsaw-snap",
-      "desc": "직소 손맛 토이 · 검증기",
-      "stage": "보류"
-    },
-    {
       "label": "ticket-kit",
       "name": "ticket-kit",
       "desc": "티켓 운영 키트 · 이 상황판 포함",

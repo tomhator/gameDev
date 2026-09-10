@@ -9,9 +9,9 @@
 |---|---|
 | 시작한 게임 프로젝트 | 14 |
 | 출시(공개 URL + 타인 플레이) | 0 |
-| 이번에 종료 | 12 (아래 표) |
+| 이번에 종료 | 13 (아래 표) |
 | 진행 중 | 2 (drill-guard, football-xcom) |
-| 보류 | 1 (jigsaw-snap) |
+| 보류 | 0 |
 
 닫는 시점에 세 프로젝트가 같은 문장을 갖고 있었다: *"미검증 = 실제 플레이 손맛. 아직 아무도 플레이 안 함."* 만드는 능력이 아니라 **만든 뒤의 한 칸**(플레이 → 보여주기 → 올리기)이 비어 있었다는 뜻이다. 다음 사이클의 완료 조건은 그래서 "공개 URL + 타인 플레이 1회"다.
 
@@ -25,6 +25,7 @@
 | **project-jigsaw** | [tomhator/project-jigsaw](https://github.com/tomhator/project-jigsaw) | 2026-04-02 → 04-23 | 15커밋 | 조각(피스) 조합 전투 퍼즐. 이음새 규칙, 제조사 시너지 | 조합 폭발. "조각에 효과 하나만…"은 유령 | 조각 맞물림 수식, 조합 폭발 조기 신호 → knowhow §1-1, §5-4 |
 | **MagicBookPrototype** | [tomhator/ProjectMagicBookPrototype](https://github.com/tomhator/ProjectMagicBookPrototype) | 2026-06-16 → 06-19 | 8커밋, 웹 | 마법서 크래프팅 웹 프로토. "만드는 행위 자체가 재미있는가?" | 검증 질문에 대한 답이 기록되지 않은 채 종료 | 빌드 도구 없는 웹 프로토 방식 → knowhow §1-2·1-4, §4-2·4-3, §5-3 |
 | **BackstreetSample** | [tomhator/BackstreetSample](https://github.com/tomhator/BackstreetSample) | 2026-07-07 → 07-08 | 2커밋, gd 1 | 탐정 × 늑대개 전환 어드벤처 프로토(사건 #001) | 코드에 throwaway 명시. 프로토 종료 | 세계관·사건·존·단서 → [`backstreet-world.md`](backstreet-world.md) |
+| **jigsaw-snap** | 이 저장소 (커밋 `0fd191b` 이전) | 2026-08-10 | 1커밋, gd 4 | 직소 "착!" 손맛 검증 토이. 4변 ±1/0 합=0 맞물림, 3초 콤보 | 미플레이. *"아이디어는 좋은데 게임의 방향을 못 잡겠다"* → 아이디어로 보관 | [`jigsaw-snap-idea.md`](jigsaw-snap-idea.md) |
 | dice-cacher | [tomhator/tomhator-dice-cacher](https://github.com/tomhator/tomhator-dice-cacher) | 2026-02-23 → 02-25 | 6커밋 | 모바일 소형(주사위 받기) | 학습용 | — |
 | tappy | [tomhator/tomhator-tappy](https://github.com/tomhator/tomhator-tappy) | 2026-03-03 | 2커밋 | 모바일 소형(탭) | 학습용 | — |
 | click-pop | [tomhator/click-pop](https://github.com/tomhator/click-pop) | 2026-03-11 → 03-13 | 3커밋 | 모바일 소형(클릭) | 학습용 | — |
@@ -32,7 +33,7 @@
 | firstgame | 이 저장소 (커밋 `ccbd1de` 이전) | 2026-01-16 | 1커밋 | Godot 2D 플랫포머 튜토리얼 | 학습용 | — |
 | dodge-the-creeps | 이 저장소 (커밋 `ccbd1de` 이전) | 2026-01-16 | 1커밋 | Godot 공식 튜토리얼 | 학습용 | — |
 
-폴더 복구: `git checkout ccbd1de -- firstgame dodge-the-creeps helldiver-lite`
+폴더 복구: `git checkout ccbd1de -- firstgame dodge-the-creeps helldiver-lite` · `git checkout 0fd191b -- jigsaw-snap`
 
 ## 아카이브 절차 (사람)
 

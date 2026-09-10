@@ -6,11 +6,11 @@
 ```
 gameDev
 ├── drill-guard     # 식민 행성 채굴 디펜스 — 8/10 스냅샷. 실제 개발은 tomhator/drill-guard
-├── jigsaw-snap     # 직소 손맛 토이 (검증기) — 보류
 ├── docs
 │   ├── knowhow.md            # 닫은 프로젝트들에서 뽑은 노하우 (앞으로의 프로젝트가 먼저 읽는 문서)
 │   ├── closed-projects.md    # 종료 프로젝트 대장 — 무엇·언제·왜·어디·건진 것
 │   ├── backstreet-world.md   # 뒷골목(Backstreet) 세계관 컨셉 회수
+│   ├── jigsaw-snap-idea.md   # 직소 손맛 아이디어 보관
 │   ├── drill-guard-plan.md   # 기획 문서 (원본은 각 저장소 docs/)
 │   ├── helldiver-lite-plan.md, survivor-extraction-plan.md, scavenger-salvage.md  # 종료 프로젝트 기획·부검
 └── tools/ticket-kit # 티켓 운영 키트 — 게임 저장소마다 apply.sh 로 복사해 붙임
@@ -21,8 +21,7 @@ gameDev
 |---|---|---|
 | 진행 | drill-guard — 인크리멘탈 × 디펜스 | `tomhator/drill-guard` |
 | 진행 | football-xcom — 턴제 전술 축구 | `tomhator/football-xcom` |
-| 보류 | jigsaw-snap — 직소 손맛 검증기 | 이 저장소 |
-| 종료 | helldiver-lite, ProjectScavenger, projectMecha, project-jigsaw, MagicBookPrototype, BackstreetSample, 1~3월 학습 프로젝트 | `docs/closed-projects.md` |
+| 종료 | helldiver-lite, jigsaw-snap, ProjectScavenger, projectMecha, project-jigsaw, MagicBookPrototype, BackstreetSample, 1~3월 학습 프로젝트 | `docs/closed-projects.md` |
 
 ## 작업 방식
 - 태스크는 GitHub Issues 티켓으로 관리한다. 규약은 `CLAUDE.md`, 키트는 `tools/ticket-kit/README.md`.
