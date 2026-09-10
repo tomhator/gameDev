@@ -11,6 +11,7 @@ gameDev
 │   ├── closed-projects.md    # 종료 프로젝트 대장 — 무엇·언제·왜·어디·건진 것
 │   ├── backstreet-world.md   # 뒷골목(Backstreet) 세계관 컨셉 회수
 │   ├── jigsaw-snap-idea.md   # 직소 손맛 아이디어 보관
+│   ├── templates/            # 헌법 1장 · 플레이 노트 · 8색 팔레트 (#20 개발 루프)
 │   ├── drill-guard-plan.md   # 기획 문서 (원본은 각 저장소 docs/)
 │   ├── helldiver-lite-plan.md, survivor-extraction-plan.md, scavenger-salvage.md  # 종료 프로젝트 기획·부검
 └── tools/ticket-kit # 티켓 운영 키트 — 게임 저장소마다 apply.sh 로 복사해 붙임
@@ -27,4 +28,4 @@ gameDev
 - 태스크는 GitHub Issues 티켓으로 관리한다. 규약은 `CLAUDE.md`, 키트는 `tools/ticket-kit/README.md`.
 - 열린 티켓은 항상 `needs-human`(당신 차례) 아니면 `needs-claude`(Claude 차례).
 - 당신 할 일 = [Assigned to me](https://github.com/tomhator/gameDev/issues/assigned/@me)
-- 새 프로젝트를 시작할 때는 `docs/knowhow.md`를 먼저 읽는다.
+- 새 프로젝트를 시작할 때는 `docs/knowhow.md`를 먼저 읽는다. 개발 루프(완료=출시, 플레이 노트 게이트, 14일 사이클)는 `CLAUDE.md`.

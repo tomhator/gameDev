@@ -1,5 +1,5 @@
 name: "💡 아이디어"
-description: "떠오른 것. 한 줄이어도 된다. 48시간 식힌 뒤 리트머스."
+description: "떠오른 것. 한 줄이어도 된다. 10분 확인 방법이 없으면 열지 않는다. 프로젝트당 열린 idea 5개 상한."
 title: "[idea] "
 labels: ["idea", "needs-claude"]
 body:
@@ -15,6 +15,14 @@ body:
     attributes:
       label: 왜 (선택)
       description: 어떤 순간이 더 재밌어지나. 모르면 비워도 됨
+  - type: textarea
+    id: verify
+    attributes:
+      label: 10분 확인 방법
+      description: 이게 재밌는지/필요한지 10분 안에 어떻게 확인하나. 못 쓰면 아직 티켓이 아니다
+      placeholder: "예: 토이에 값 하나 바꿔 넣고 3판 플레이 → 콤보가 더 자주 터지는지 본다"
+    validations:
+      required: true
   - type: dropdown
     id: size
     attributes:
