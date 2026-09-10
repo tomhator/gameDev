@@ -3,15 +3,21 @@
 GitHub Issues 위에서 사람과 Claude가 서로 티켓을 던지며 일하기 위한 키트.
 여기가 원본이고, 게임 저장소마다 복사해서 붙인다.
 
-## 새 게임 저장소 세팅 (PC, 3줄)
+## 새 게임 저장소 열기
+
+**PC (명령 하나).** gh 로그인 상태에서:
 
 ```bash
-gh repo create tomhator/새게임 --public --clone && cd 새게임          # 1. 저장소
-CLAUDE_CODE_OAUTH_TOKEN=<claude setup-token 결과> ../gameDev/tools/ticket-kit/apply.sh .   # 2. 키트 + 라벨 + 시크릿
-git add -A && git commit -m "ticket-kit 적용" && git push               # 3. 커밋
+tools/ticket-kit/new-game.sh 새게임            # --private 가능. 시크릿 토큰은 환경변수 또는 프롬프트
 ```
 
-Claude GitHub App이 "All repositories"로 설치돼 있으면 이걸로 끝. 아니면 https://github.com/settings/installations 에서 저장소 추가.
+저장소 생성 → 클론(gameDev 옆 폴더) → 키트·라벨·시크릿 → 첫 커밋·푸시까지 한 번에. 끝나면 첫 티켓 링크를 찍어준다.
+
+**폰 (템플릿).** 한 번만 준비: PC에서 `new-game.sh game-template` 을 만든 뒤 그 저장소 Settings → General → "Template repository" 체크.
+이후 폰에서는 https://github.com/tomhator/game-template → "Use this template" → 이름 입력. 첫 푸시에 `ticket-kit-setup.yml`이 라벨을 자동으로 만든다.
+남는 건 시크릿 하나: 저장소 Settings → Secrets → `CLAUDE_CODE_OAUTH_TOKEN` (토큰은 PC에서 뽑아둔 것 재사용).
+
+Claude GitHub App이 "All repositories"로 설치돼 있으면 둘 다 이걸로 끝. 아니면 https://github.com/settings/installations 에서 저장소 추가.
 
 ## 적용
 
@@ -31,8 +37,10 @@ tools/ticket-kit/apply.sh ../my-game me/my-game # 직접 지정
 | `ISSUE_TEMPLATE/` | 이슈 폼 7개. 종류 라벨과 코트 라벨이 자동으로 붙는다 |
 | `CLAUDE.snippet.md` | 작업 규약. 대상 저장소 CLAUDE.md에 마커 블록으로 들어간다 |
 | `workflows/ticket-court.yml` | 코트 라벨 배타 처리 + `needs-human`이면 소유자에게 자동 할당(알림) |
+| `workflows/ticket-kit-setup.yml` | 기본 브랜치 푸시 시 labels.json 대로 라벨 자동 생성/갱신 (gh·토큰 없는 저장소용) |
 | `workflows/claude.yml` | 티켓·PR 댓글의 `@claude` 멘션 → Claude Code 세션 호출. 앱 설치 + `CLAUDE_CODE_OAUTH_TOKEN` 시크릿 필요(파일 머리말 참고) |
 | `apply.sh` | 위 전부를 대상 저장소에 적용 |
+| `new-game.sh` | 새 저장소 생성부터 첫 푸시까지 명령 하나 (PC, gh 필요) |
 | `update.sh` | 대상 저장소에 복사되어, 거기서 실행하면 최신 키트를 받아 재적용 |
 | `VERSION`, `CHANGELOG.md` | 키트 버전과 변경 내역 |
 | `dashboard/` | 상황판 생성기. 대상 저장소의 `.github/ticket-kit/dashboard/`로 복사된다 |

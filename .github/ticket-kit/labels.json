@@ -1,0 +1,12 @@
+[
+  { "name": "needs-human",  "color": "D9822B", "description": "당신 차례 — 결정/플레이/답변이 필요함" },
+  { "name": "needs-claude", "color": "2F6FB5", "description": "Claude 차례 — 구현/조사/답변 진행" },
+
+  { "name": "idea",     "color": "C5CED8", "description": "아이디어. 48시간 식힌 뒤 리트머스" },
+  { "name": "bug",      "color": "C5CED8", "description": "의도와 다르게 동작함" },
+  { "name": "tuning",   "color": "C5CED8", "description": "수치/체감 조정" },
+  { "name": "feature",  "color": "C5CED8", "description": "새 기능. 스코프 헌법 확인 필수" },
+  { "name": "decision", "color": "C5CED8", "description": "Claude가 던지는 결정 요청 (Go/No-Go 등)" },
+  { "name": "playtest", "color": "C5CED8", "description": "Claude가 던지는 플레이 요청 — 체감 보고 필요" },
+  { "name": "question", "color": "C5CED8", "description": "기획 의도 확인 등 질문" }
+]
