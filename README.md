@@ -14,7 +14,8 @@ gameDev
 │   ├── templates/            # 헌법 1장 · 플레이 노트 · 8색 팔레트 (#20 개발 루프)
 │   ├── drill-guard-plan.md   # 기획 문서 (원본은 각 저장소 docs/)
 │   ├── helldiver-lite-plan.md, survivor-extraction-plan.md, scavenger-salvage.md  # 종료 프로젝트 기획·부검
-└── tools/ticket-kit # 티켓 운영 키트 — 게임 저장소마다 apply.sh 로 복사해 붙임
+├── tools/ticket-kit # 티켓 운영 키트 — 게임 저장소마다 apply.sh 로 복사해 붙임
+└── tools/gif-factory # 맥북 GIF 공장 — 구글 드라이브 녹화 → 홍보용 GIF 자동 생성
 ```
 
 ## 프로젝트 현황 (2026-09-10)
