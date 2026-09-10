@@ -8,6 +8,7 @@
 #   2. workflows/       → <대상>/.github/workflows/        (덮어씀)
 #   2b. dashboard/, update.sh, VERSION, labels.json → <대상>/.github/ticket-kit/ (덮어씀) + ticket-dashboard.json 골격
 #   2c. templates/      → <대상>/docs/templates/ (덮어씀) — 헌법·플레이 노트·팔레트
+#   2d. seeds/decisions.md → <대상>/docs/decisions.md (없을 때만) — 결정 로그
 #   3. CLAUDE.snippet.md → <대상>/CLAUDE.md 의 마커 블록 안에 삽입/교체
 #   4. labels.json (+ <대상>/.github/ticket-labels.local.json 이 있으면 추가) → GitHub 라벨 생성/갱신
 #      인증: gh CLI 가 있으면 gh, 없으면 GITHUB_TOKEN 또는 GH_TOKEN 으로 curl
@@ -48,6 +49,11 @@ fi
 mkdir -p "$TARGET/docs/templates"
 cp "$KIT_DIR"/templates/* "$TARGET/docs/templates/"
 echo "-- 템플릿 $(ls "$KIT_DIR"/templates/* | wc -l)개 → docs/templates/ (헌법·플레이 노트·팔레트)"
+# 결정 로그는 쌓이는 기록이라 덮어쓰지 않는다. 없을 때만 골격을 깐다.
+if [[ ! -f "$TARGET/docs/decisions.md" ]]; then
+  cp "$KIT_DIR"/seeds/decisions.md "$TARGET/docs/decisions.md"
+  echo "-- docs/decisions.md 골격 생성 (결정 로그: 맥락→근거→결과 3줄, 세션 끝에 append)"
+fi
 grep -qxF '.github/ticket-kit/dashboard/out/' "$TARGET/.gitignore" 2>/dev/null || echo '.github/ticket-kit/dashboard/out/' >> "$TARGET/.gitignore"
 
 # 3. CLAUDE.md 마커 블록 (스니펫의 {{VERSION}} 치환)

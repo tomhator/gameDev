@@ -12,6 +12,15 @@ import argparse, datetime as dt, glob, json, os, pathlib, re, subprocess, sys, u
 HERE = pathlib.Path(__file__).resolve().parent
 COURT = ("needs-human", "needs-claude")
 KINDS = ("idea", "bug", "tuning", "feature", "decision", "playtest", "question")
+# 단계 라이프사이클 (#31). 순서가 곧 칸반 열 순서.
+STAGES = ("stage:idea", "stage:spec", "stage:build", "stage:test", "stage:art", "stage:verify")
+STAGE_NAME = {"stage:idea": "아이디어", "stage:spec": "기획", "stage:build": "구현",
+              "stage:test": "테스트", "stage:art": "아트", "stage:verify": "검수"}
+STAGE_OWNER = {"stage:idea": "h", "stage:spec": "h", "stage:build": "c",
+               "stage:test": "h", "stage:art": "c", "stage:verify": "h"}
+STAGE_LIMIT = {"stage:idea": 5, "stage:build": 1, "stage:art": 1}
+ACTIVE_STAGES = STAGES[1:]   # 기획~검수
+ACTIVE_LIMIT = 3
 
 
 def api(path, token):
@@ -64,6 +73,8 @@ def slim(issue):
         "labels": labels,
         "court": next((c for c in COURT if c in labels), None),
         "kind": next((k for k in KINDS if k in labels), None),
+        "stage": next((s for s in STAGES if s in labels), None),
+        "over": "wip-over" in labels,
         "milestone": issue["milestone"]["title"] if issue.get("milestone") else None,
         "created": issue["created_at"], "updated": issue["updated_at"], "closed": issue.get("closed_at"),
         "comments": issue["comments"],
@@ -93,6 +104,8 @@ def ago(iso, now):
 def chips(i, proj_labels):
     h = ""
     if i["kind"]: h += f'<span class="chip">{KIND_ICON.get(i["kind"], "")} {i["kind"]}</span>'
+    if i.get("stage"): h += f'<span class="chip st">{esc(STAGE_NAME[i["stage"]])}</span>'
+    if i.get("over"): h += '<span class="chip over">WIP 초과</span>'
     p = next((l for l in i["labels"] if l in proj_labels), None)
     if p: h += f'<span class="chip p">{esc(p)}</span>'
     if i["milestone"]: h += f'<span class="chip ms">{esc(i["milestone"])}</span>'
@@ -127,6 +140,34 @@ def throw_row(repo, forms, proj_label):
         short = re.sub(r"\s*\(.*\)\s*$", "", f["name"])
         btns.append(f'<a class="btn {court}" href="{esc(new_issue_url(repo, f, proj_label))}" target="_blank" rel="noopener" title="{esc(f["name"])}">{esc(short)}</a>')
     return '<div class="throw"><span>티켓 던지기</span>' + "".join(btns) + "</div>"
+
+
+def gauge(n, limit):
+    """WIP 게이지. 상한이 없으면 개수만."""
+    if not limit:
+        return f'<span class="wip"><b>{n}</b></span>'
+    pct = min(round(n / limit * 100), 100)
+    cls = "wip over" if n > limit else ("wip full" if n == limit else "wip")
+    return (f'<span class="{cls}"><b>{n}</b>/{limit}<i class="bar"><i style="width:{pct}%"></i></i></span>')
+
+
+def kanban(is_open):
+    """단계별 칸반 6열 + WIP 게이지. 단계 없는 티켓(decision/question/playtest)은 빠진다."""
+    cols = []
+    for s in STAGES:
+        mine = sorted([i for i in is_open if i["stage"] == s], key=lambda i: i["updated"], reverse=True)
+        cards = "".join(
+            f'<a class="k{" over" if i["over"] else ""}" href="{i["url"]}" target="_blank" rel="noopener">'
+            f'<span class="n">#{i["n"]}</span><span class="t">{esc(i["title"])}</span>'
+            f'<span class="ct {i["court"][6] if i["court"] else ""}"></span></a>'
+            for i in mine) or '<div class="empty">비어 있음</div>'
+        cols.append(f'<div class="col {STAGE_OWNER[s]}"><div class="ch"><span>{esc(STAGE_NAME[s])}</span>'
+                    f'{gauge(len(mine), STAGE_LIMIT.get(s))}</div><div class="body">{cards}</div></div>')
+    active = sum(1 for i in is_open if i["stage"] in ACTIVE_STAGES)
+    staged = sum(1 for i in is_open if i["stage"])
+    note = (f'<div class="klegend">진행 중(기획~검수 합계) {gauge(active, ACTIVE_LIMIT)}'
+            f'<span class="sp">단계 있는 티켓 {staged} · 단계 없음(decision/question/playtest)은 위 목록에서</span></div>')
+    return '<div class="kan">' + "".join(cols) + "</div>" + note
 
 
 def render(data):
@@ -175,13 +216,16 @@ def render(data):
 
     foot = (f'이 화면은 Claude가 세션을 시작하고 끝낼 때 GitHub에서 다시 읽어 갱신합니다. 그 사이의 변화는 '
             f'<a href="https://github.com/{repo}/issues" target="_blank" rel="noopener"><u>GitHub 이슈</u></a>가 정확합니다. '
-            f'"티켓 던지기" 버튼은 GitHub 이슈 폼을 템플릿·라벨이 채워진 채로 엽니다. 주황 테두리는 당신 코트로, 파랑 테두리는 Claude 코트로 가는 티켓입니다.')
+            f'"티켓 던지기" 버튼은 GitHub 이슈 폼을 템플릿·라벨이 채워진 채로 엽니다. 주황 테두리는 당신 코트로, 파랑 테두리는 Claude 코트로 가는 티켓입니다. '
+            f'단계 칸반의 열 왼쪽 색은 그 단계를 넘기는 사람(주황=당신, 파랑=Claude), 카드 오른쪽 점은 지금 코트입니다. '
+            f'게이지가 빨강이면 동시 진행 제한을 넘긴 것으로, 자리를 비우기 전에는 진행하지 않습니다.')
     return {
         "__TITLE__": esc(data["title"]),
         "__SNAP__": now.strftime("%Y-%m-%d %H:%M KST 기준 스냅샷"),
         "__LINKS__": "".join(f'<a href="{u}" target="_blank" rel="noopener">{t}</a>' for u, t in links),
         "__STRIP__": strip,
         "__CNT_H__": str(len(human)), "__CNT_C__": str(len(claude)), "__CNT_D__": str(len(done)),
+        "__KANBAN__": kanban(is_open),
         "__HUMAN__": rows(human, proj_labels, now, "비어 있음. 구경꾼 모드 — Claude가 곧 뭔가 던질 것", hot=True),
         "__CLAUDE__": rows(claude, proj_labels, now, "비어 있음. 티켓을 던져 주세요"),
         "__DONE__": rows(done, proj_labels, now, "아직 닫힌 티켓 없음", closed=True),

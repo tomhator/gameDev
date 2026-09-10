@@ -33,12 +33,13 @@ tools/ticket-kit/apply.sh ../my-game me/my-game # 직접 지정
 
 | 파일 | 역할 |
 |---|---|
-| `labels.json` | 라벨 정의. 코트 2개 + 종류 7개 |
+| `labels.json` | 라벨 정의. 코트 2개 + 종류 7개 + 단계 6개 + `wip-over` |
 | `ISSUE_TEMPLATE/` | 이슈 폼 7개. 종류 라벨과 코트 라벨이 자동으로 붙는다 |
 | `CLAUDE.snippet.md` | 작업 규약. 대상 저장소 CLAUDE.md에 마커 블록으로 들어간다 |
-| `workflows/ticket-court.yml` | 코트 라벨 배타 처리 + `needs-human`이면 소유자에게 자동 할당(알림) |
+| `workflows/ticket-court.yml` | 코트 라벨 배타 처리 + `needs-human`이면 소유자에게 자동 할당(알림) + 단계 라벨 배타 + WIP 상한 초과 경고 |
 | `workflows/ticket-kit-setup.yml` | 기본 브랜치 푸시 시 labels.json 대로 라벨 자동 생성/갱신 (gh·토큰 없는 저장소용) |
 | `workflows/claude.yml` | 티켓·PR 댓글의 `@claude` 멘션 → Claude Code 세션 호출. 앱 설치 + `CLAUDE_CODE_OAUTH_TOKEN` 시크릿 필요(파일 머리말 참고) |
+| `seeds/decisions.md` | 결정 로그 골격. 대상에 `docs/decisions.md`가 없을 때만 깔린다(쌓이는 기록이라 덮지 않는다) |
 | `apply.sh` | 위 전부를 대상 저장소에 적용 |
 | `new-game.sh` | 새 저장소 생성부터 첫 푸시까지 명령 하나 (PC, gh 필요) |
 | `update.sh` | 대상 저장소에 복사되어, 거기서 실행하면 최신 키트를 받아 재적용 |
@@ -78,6 +79,18 @@ Claude는 규약에 따라 세션 시작·끝에 이 화면을 같은 URL로 재
 
 이슈 본문은 마크다운만 렌더링되므로(HTML 스타일·스크립트는 제거) 표, Mermaid, 알림 상자, 체크리스트로 시각화한다.
 종류별 기본 형식과 "마크다운으로 부족하면 아티팩트" 규칙은 `CLAUDE.snippet.md`의 "티켓은 읽는 게 아니라 보는 것" 절. 예시: tomhator/gameDev#15.
+
+## 단계와 동시 진행 제한 (#31, v2.0.0)
+
+티켓은 `stage:idea → spec → build → test → art → verify` 를 옮겨 다닌다. 종류 라벨이 "무엇인가", 단계 라벨이 "어디 있나".
+`bug`/`tuning`은 `stage:build`에서 시작해 `stage:test`에서 닫고, `decision`/`question`/`playtest`는 단계가 없다.
+상한은 **구현 1 · 아트 1 · 기획~검수 합계 3 · 아이디어 5**. 넘기면 `ticket-court.yml`이 `wip-over` 라벨과 경고 댓글을 붙이고, 자리가 비면 뗀다.
+자리가 없으면 아이디어를 기획으로 못 올린다 — 앞의 것을 끝내거나 닫아야 한다. 상황판의 "단계 칸반"이 지금 어디에 몇 개가 있는지 보여준다.
+
+## 결정 로그
+
+`docs/decisions.md`. 터미널·앱 세션의 대화 원문은 세션이 끝나면 사라지므로, 남길 것은 **맥락 → 근거 → 결과** 세 줄로 줄여 여기에 쌓는다.
+Claude는 세션 시작에 최근 10개를 읽고 세션 끝에 append한다. 티켓 안에서 끝난 결정은 티켓 댓글이 원본이고 로그에는 세 줄 + `#번호`만 둔다.
 
 ## 핵심 규칙 한 줄
 

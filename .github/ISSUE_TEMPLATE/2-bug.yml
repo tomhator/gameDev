@@ -1,7 +1,7 @@
 name: "🐛 버그"
 description: "의도와 다르게 동작함"
 title: "[bug] "
-labels: ["bug", "needs-claude"]
+labels: ["bug", "stage:build", "needs-claude"]
 body:
   - type: textarea
     id: what

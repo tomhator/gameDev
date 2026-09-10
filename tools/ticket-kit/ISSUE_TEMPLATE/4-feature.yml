@@ -1,7 +1,7 @@
 name: "🧩 기능"
 description: "만들기로 정한 것. 스코프 헌법 확인 후"
 title: "[feature] "
-labels: ["feature", "needs-claude"]
+labels: ["feature", "stage:spec", "needs-claude"]
 body:
   - type: textarea
     id: what
