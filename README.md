@@ -18,12 +18,16 @@ gameDev
 └── tools/gif-factory # 맥북 GIF 공장 — 구글 드라이브 녹화 → 홍보용 GIF 자동 생성
 ```
 
-## 프로젝트 현황 (2026-09-10)
+## 프로젝트 현황 (2026-09-11)
 | 상태 | 프로젝트 | 어디 |
 |---|---|---|
-| 진행 | drill-guard — 인크리멘탈 × 디펜스 | `tomhator/drill-guard` |
-| 진행 | football-xcom — 턴제 전술 축구 | `tomhator/football-xcom` |
+| 진행 | rainy-day — 처마 투 처마, 시간을 되돌리는 비 | `tomhator/rainy-day` (티켓·코드 전부) |
+| 보류 | drill-guard — 인크리멘탈 × 디펜스 | `tomhator/drill-guard` |
+| 보류 | football-xcom — 턴제 전술 축구 | `tomhator/football-xcom` |
 | 종료 | helldiver-lite, jigsaw-snap, ProjectScavenger, projectMecha, project-jigsaw, MagicBookPrototype, BackstreetSample, 1~3월 학습 프로젝트 | `docs/closed-projects.md` |
+
+> [!WARNING]
+> **보류 = 새 티켓 안 열고 손대지 않음. 재개는 rainy-day 공개 후.** 규약 4조 "전작 출시 전 다음 시작 금지"의 해소가 아니라 명시적 예외다 — 둘 다 미출시인 채 멈춰 있어 "전작 출시"가 영영 오지 않으므로, 완료(공개 URL) 하나를 먼저 만드는 쪽을 택했다. (#37)
 
 ## 작업 방식
 - 태스크는 GitHub Issues 티켓으로 관리한다. 규약은 `CLAUDE.md`, 키트는 `tools/ticket-kit/README.md`.
