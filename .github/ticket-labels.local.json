@@ -1,7 +1,32 @@
 [
-  { "name": "helldiver-lite", "color": "7A5AF5", "description": "프로젝트: 솔로 헬다이버즈-라이트" },
-  { "name": "drill-guard",    "color": "1F9E89", "description": "프로젝트: 식민 행성 채굴 디펜스" },
-  { "name": "jigsaw-snap",    "color": "B58B2F", "description": "프로젝트: 직소 손맛 토이 (보류)" },
-  { "name": "ticket-kit",     "color": "6B7A8C", "description": "툴: 티켓 키트 자체" },
-  { "name": "gif-factory",    "color": "8C6B7A", "description": "툴: 맥북 GIF 공장" }
+  {
+    "name": "helldiver-lite",
+    "color": "7A5AF5",
+    "description": "프로젝트: 솔로 헬다이버즈-라이트"
+  },
+  {
+    "name": "drill-guard",
+    "color": "1F9E89",
+    "description": "프로젝트: 식민 행성 채굴 디펜스"
+  },
+  {
+    "name": "jigsaw-snap",
+    "color": "B58B2F",
+    "description": "프로젝트: 직소 손맛 토이 (보류)"
+  },
+  {
+    "name": "ticket-kit",
+    "color": "6B7A8C",
+    "description": "툴: 티켓 키트 자체"
+  },
+  {
+    "name": "gif-factory",
+    "color": "8C6B7A",
+    "description": "툴: 맥북 GIF 공장"
+  },
+  {
+    "name": "cheoma",
+    "color": "3E7CB1",
+    "description": "프로젝트: 처마 투 처마 — 시간을 되돌리는 비 (첫 쁘띠 사이클)"
+  }
 ]

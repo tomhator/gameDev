@@ -18,9 +18,10 @@ gameDev
 └── tools/gif-factory # 맥북 GIF 공장 — 구글 드라이브 녹화 → 홍보용 GIF 자동 생성
 ```
 
-## 프로젝트 현황 (2026-09-10)
+## 프로젝트 현황 (2026-09-11)
 | 상태 | 프로젝트 | 어디 |
 |---|---|---|
+| **사이클 1** | 처마 투 처마 — 시간을 되돌리는 비, 처마에서 출구까지 5초 | [#37](https://github.com/tomhator/gameDev/issues/37) · S1 토이 대기 |
 | 진행 | drill-guard — 인크리멘탈 × 디펜스 | `tomhator/drill-guard` |
 | 진행 | football-xcom — 턴제 전술 축구 | `tomhator/football-xcom` |
 | 종료 | helldiver-lite, jigsaw-snap, ProjectScavenger, projectMecha, project-jigsaw, MagicBookPrototype, BackstreetSample, 1~3월 학습 프로젝트 | `docs/closed-projects.md` |
