@@ -3,6 +3,12 @@
   "artifact_url": "https://claude.ai/code/artifact/8f067610-5d4e-4d6a-8a08-b9fd59d864a9",
   "projects": [
     {
+      "label": "cheoma",
+      "name": "처마 투 처마",
+      "desc": "시간을 되돌리는 비 · 처마에서 출구까지 5초 · 첫 쁘띠 사이클",
+      "stage": "사이클 1 · S1 토이 대기 (#37)"
+    },
+    {
       "label": "drill-guard",
       "name": "drill-guard",
       "desc": "식민 행성 채굴 디펜스 · 인크리멘탈 × 디펜스",
