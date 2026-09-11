@@ -3,6 +3,9 @@
 버전 규칙: 메이저 = 사람의 행동이 달라지는 규약 변경(라벨 이름, 코트 규칙) · 마이너 = 규약 절 추가, 폼·워크플로우·상황판 기능 추가 · 패치 = 버그 수정, 문구.
 프로젝트 저장소에서 올리는 법: 세션에 "키트 업데이트해줘" 또는 `.github/ticket-kit/update.sh`.
 
+## 2.0.1 — 2026-09-11
+- 상황판 `template.html`: `:root[data-theme="dark"]` 블록에 `--stage` `--stage-soft` `--over` `--over-soft` 네 토큰 추가. 뷰어가 다크를 명시적으로 고르면 단계 칩·WIP 초과 색이 밝은 값으로 남던 회귀 (#36)
+
 ## 2.0.0 — 2026-09-10
 사람의 행동이 바뀐다: 티켓에 **단계**가 생기고, 단계를 올리는 데 **자리**가 필요하다. (#31)
 - 라벨 7종 추가: `stage:idea` `stage:spec` `stage:build` `stage:test` `stage:art` `stage:verify` + `wip-over`
