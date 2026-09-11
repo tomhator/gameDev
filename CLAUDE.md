@@ -1,5 +1,5 @@
 <!-- ticket-kit:start -->
-## 티켓 규약 (ticket-kit v2.0.0)
+## 티켓 규약 (ticket-kit v2.0.1)
 
 이 저장소의 작업은 GitHub Issues 티켓으로 관리한다. 규칙은 짧고, 예외는 없다.
 
