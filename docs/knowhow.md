@@ -3,6 +3,7 @@
 > 2026-09-10, #19. 대상: helldiver-lite(115커밋) · ProjectScavenger(336) · projectMecha(160) · project-jigsaw(15) · MagicBookPrototype(8) · BackstreetSample(2) + 1~3월 학습 프로젝트 4개.
 > **새 프로젝트를 시작할 때 이 문서를 먼저 읽는다.** 특히 §1과 §11. 나머지는 해당 작업이 생겼을 때 찾아 읽는다.
 > 각 항목 끝의 `[프로젝트: 파일]`은 원본 근거다. 원문이 잘 쓴 문장은 인용으로 남겼다. 추정은 "(추정)"으로 표시.
+> **2026-09-30 (#40): rainy-day 가 준 줄을 §3-2 · §6-2 · §9 · §10 · §11 에 더했다.** 처음으로 「공개 URL + 타인 플레이」 를 채운 프로젝트다. 전문은 [`rainy-day-postmortem.md`](rainy-day-postmortem.md).
 
 ## 0. 한 문단 요약
 
@@ -105,6 +106,10 @@ helldiver-lite가 가장 완성도 높은 체계를 만들었고 17일간 실제
 - **설정이 바뀌면 같은 시드도 같은 맵이 아니다.** rng 소비량이 달라진다. 큰 효과(6배)는 단일 시드로 OK, ±20%는 시드 3~5개 평균. `[helldiver: STATUS.md:680-692]`
 - **재미 지표도 헤드리스로 셀 수 있다.** 200런 시뮬로 "교체 딜레마 평균 9.15회/런". 코어가 바뀌어도 throughput 하한 근거로 살아남았다. `[mecha: check_swap_dilemma_frequency.gd]`
 - **계측 하네스는 첫날부터 커밋한다.** helldiver-lite의 `--arctest` 21항목, 20시드×40초 정체 계측, 사격 0 탈출전 시뮬은 **저장소에 없다.** STATUS의 수치를 재현할 코드가 없다.
+- **난이도의 눈금은 클리어율이 아니라 「최고 게이지」 다.** 봇이 8/8 을 깨도 최고 게이지 0.73 이면 한 번도 위험한 적이 없었다는 뜻이고, 사람은 그것을 「도구가 필요 없다」 로 느낀다. 합격선을 「맨몸 0/8 · 한 벌 클리어하되 게이지 0.85 이상 · 두 벌 0.6 이하」 로 못 박으니 튜닝 열두 번이 표 한 장으로 판정됐다. `[rainy-day: decisions.md #33]`
+- **「첫 시도 클리어율」 이 없으면 안 보인다.** 재도전마다 판이 새로 깔리는 게임은 시간만 들이면 언젠가 깬다. 첫 시도 눈금을 넣고서야 난로 연료의 효과가 6/8 → 3/8 → 0/8 로 보였다. `[rainy-day: decisions.md #22]`
+- **봇의 교착은 난이도를 과대평가한다.** 연료 없는 난로 위에 240초 서 있던 봇이 「맨몸 1/8」 을 만들었고 사람은 「너무 쉽다」 고 했다. 봇의 판단 한 줄을 지울 때는 그 줄이 겸하던 다른 역할부터 확인한다. `[rainy-day: decisions.md #26, #31]`
+- **속도는 체감, 난이도는 총량.** 회복 속도를 0.25 → 0.18 로 내려도 최고 게이지가 0.72 로 똑같았다. 되돌려 주는 총량이 고정이면 최고 게이지도 고정이다. `[rainy-day: decisions.md #46]`
 
 ### 3-3. 실패 기록
 - **실패한 시도를 "재시도 방지" 표로 남긴다.** 길찾기 실패 6종(이격 힘 12.4% / 회피 여유 6.4% / 상시 격자 9.4~15% / …)이 표로 있어 재튠 비용이 낮다. `[helldiver: STATUS.md:290-296, 400-417]`
@@ -230,6 +235,10 @@ helldiver-lite가 가장 완성도 높은 체계를 만들었고 17일간 실제
 - **헤드리스 하네스 함정 4개**: 프레임≠시간(경과 시간으로 대기) / `queue_free()`는 프레임 끝(배열로 세라) / `const Dictionary`는 읽기 전용(`duplicate()`) / `get_global_mouse_position()` 불가(인자 주입). `[helldiver: STATUS.md:617-637]`
 - **rng 분리**: 로직 난수는 `run.rng`(시드 고정), 연출 난수는 `randf()`(전역), 데칼은 `rng.seed ^ 0x5EED` 별도. `--seed=N` → `static var forced_seed` → 씬 리로드에도 유지. `[helldiver: Run.gd:87-150, ArcBolt.gd]`
 - **데이터 리소스는 `duplicate(true)` 후 사용.** `.tres`에 `current_hp`를 두면 공유 리소스 변조. 코어도 런마다 duplicate. `[mecha: PartsFactory.gd] [jigsaw: BattleManager.gd:40-41]`
+- **exit code 를 믿지 않는다.** GDScript 는 런타임 에러가 나도 그 함수 한 프레임만 되감고 이어 가서, 터진 판이 `0 FAILED / exit 0` 으로 보고된다. `verify.sh` 가 출력(에러 줄 · 요약줄 · FAILED 수)을 파싱해 판정한다. `[rainy-day: tools/verify.sh, CLAUDE.md]`
+- **하네스는 그림을 못 본다.** 하루에 그림 관련으로 다섯 번 걸렸고 단언은 매번 0 FAILED 였다(주인공이 통째로 안 그려짐 · 12px 밀림 · 알림 둘이 동시에 뜸). 그리기를 고쳤으면 창 모드로 찍어 픽셀을 잰다. 화면 문구는 단언에 넣는다 — 폐기된 어휘 `BLUEPRINT FOUND` 가 닷새를 살아 있었다. `[rainy-day: decisions.md #25, #34, #47]`
+- **하네스 안에서 소리를 틀지 않는다.** `AudioStreamPlayer.play()` 를 켠 채 한 프레임이 수십 초 걸리면 다음 `process_frame` 이 영영 안 온다. 재생은 `play_sfx()` 한 군데를 거치고, 헤드리스 · 하네스 아래에서는 그 함수가 막는다. `[rainy-day: decisions.md #56]`
+- **`:=` 타입 추론 함정.** `class_name` 없는 노드의 반환값, `floor()` · `round()` 같은 전역 함수의 반환값을 `:=` 로 받으면 하네스 전체의 컴파일이 실패한다. `floorf()` · `roundi()` 를 쓴다. `[rainy-day: CLAUDE.md]`
 
 ### 6-3. 이동·충돌·길찾기 (helldiver-lite)
 - **조향 + 격자 BFS 역할 분담.** 평상시 조향(연속) / 막혔을 때만 거리장 BFS(8방향 양자화라 상시 쓰면 진동 9.4%). 격자 칸 판정은 겹침이 아니라 **칸 중심**. string pulling 12칸. 진동 감지 = 순 이동 + 총이동/최대이탈 비율. `[Run.gd:960-1200]`
@@ -349,6 +358,12 @@ helldiver-lite가 가장 완성도 높은 체계를 만들었고 17일간 실제
 | art-style-bible.md / art-order-template.md | scavenger `Docs/Design/` | 194 / 153 | 픽셀 규칙 원장 + 3단계 발주 프롬프트 | 팔레트·주인공만 교체 |
 | 문서 템플릿 | helldiver SCHEDULE/BACKLOG/STATUS 상단/회의록 골격 · scavenger Specs/_TEMPLATE.md · mecha PROJECT_OVERVIEW 상태 태그(✅🟡🔧❌) + 폐기 표 | — | 운영 양식 | 골격만 |
 | .gitattributes / .gitignore / project.godot 설정 3줄 | helldiver | — | §6-1 | 그대로 복사 |
+| **밸런스 프로브** | rainy-day `scripts/DevSnap.gd` `_probe()` | ~300 | 봇 방침 + 시드 8 × 장비 벌 N → 첫 시도 · 결국 · 시간 · 롤백 · **최고 게이지** | 패턴. 봇 방침은 게임마다 다시 쓴다 |
+| **verify.sh** | rainy-day `tools/verify.sh` | ~60 | 헤드리스 1초 · 출력 파싱 판정 · `VERIFY_WINDOW=1` 스크린샷 | 그대로 복사, 씬 이름만 |
+| show_hint | rainy-day `scripts/Main.gd` | ~40 | 순간 힌트: 4초 · 마지막 1초 페이드 · id 당 한 번 · 단언 가능 | 그대로 복사 |
+| play_sfx / _audio_live | rainy-day `scripts/Main.gd` | ~30 | 소리 게이트(헤드리스 · 하네스 차단) + 마스터 버스 볼륨 + `user://settings.cfg` | 그대로 복사 |
+| CONTROLS 단일 출처 + State enum | rainy-day `scripts/Main.gd` | — | 조작 표 하나를 타이틀 · 옵션 · 프린터가 읽는다. TITLE · PAUSED 가 `step()` 첫 줄에서 판을 멈춘다. ESC 와 P 둘 다 | 패턴 |
+| 웹 익스포트 프리셋 | rainy-day `export_presets.cfg` | — | `thread_support=false` → itch SharedArrayBuffer 설정 불필요 | 설정 복사 |
 
 **가져가지 않는 것**: StageRunner(2,273줄)·EnemySpawner·Firing·Mech/·Base/·Quests/·World/(스캐빈저), CombatUI(1,580)·GameState(872)(메카). 시스템을 이식하면 딸린 시스템이 줄줄이 따라온다.
 
@@ -363,6 +378,7 @@ helldiver-lite가 가장 완성도 높은 체계를 만들었고 17일간 실제
 | **스캐빈저 — Protocol/Interrupt/Patch** | 발신원 불명 명령어로 기계 폭주. 주인공 "신성한 껍데기"(심장 AI), 기계교단 두 분파, 빚 서사. 사막 노마드 외형 | "죽음 없음 = 강제 송환"과 "성장이 곧 오염"은 규칙과 픽션이 한 몸 → 이식 가능. 심장·교단·빚은 거점·NPC·퀘스트 전제 → 수입 금지와 충돌, 보류 |
 | **IRON FRACTURE** (jigsaw) | 차가운 SF 메카, 황폐한 미래 도시. 섹터 4곳, 이벤트 한 줄 내러티브 5종 | 이벤트 문구 5종은 그대로 쓸 수 있는 분량 |
 | **jigsaw-snap 손맛** | 4변 ±1/0 합=0 맞물림 + 3초 콤보 + pitch 에스컬레이션 | → [`jigsaw-snap-idea.md`](jigsaw-snap-idea.md). 손맛은 미검증, 얹을 게임 미정. 열 때 §1-1 통과 필수 |
+| **역행 물질과 비** (rainy-day) | 운석 구역에 내리는 비를 맞은 것은 전부 맞기 직전으로 역행한다. 「정제 = 제어 가능성을 얻고 시간 초월성을 잃는다」 가 도구 · 롤백 · 샤드 규칙을 한 문장으로 설명 | → [`rainy-day-postmortem.md`](rainy-day-postmortem.md) §8. 루프를 다시 쓸 때만 통째로. **「규칙에서 세계관을 역산한다」** 는 방법과 「반복하는 식물 4프레임」 장치는 독립 가치 |
 | **후보 슬레이트** | 「저승 배달부」(*"다른 프로젝트라면 1순위감"*), 「익스트랙션 쇼」(봉인, 코옵/PvPvE용) | 다음 쁘띠 게임 후보 |
 
 ---
@@ -391,6 +407,9 @@ helldiver-lite가 가장 완성도 높은 체계를 만들었고 17일간 실제
 - [ ] 도형만 보고 크기·줌을 바꾸지 않는다. 없는 제약을 발명하지 않는다.
 - [ ] 에셋 쇼핑 전에 "사야 할 것의 구조"를 정의한다. 도구는 판정 기준을 먼저 세우고 바꾼다.
 - [ ] STATUS 첫 블록 3줄. 해결된 절은 이관. 취소선 보존 금지. AI 세션 요약은 검토 후 입력.
+- [ ] **남이 한 판을 보기 전에는 `tuning` 티켓을 열지 않는다.** rainy-day 는 이틀 88커밋을 조였는데 외부 플레이어가 막힌 곳은 난이도가 아니라 설명이었다.
+- [ ] **규칙 셋을 첫 30초 안에 화면이 가르치는가**를 외부 플레이 전에 잰다. 힌트를 배포 전날 넣으면 늦다.
+- [ ] 열린 티켓 상한 5. 티켓 = 결과물 하나. 마스터 티켓 금지.
 - [ ] 디버그 로그·프롬프트 원문·절대경로를 커밋하지 않는다.
 
 **끝낼 때**

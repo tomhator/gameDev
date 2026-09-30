@@ -13,12 +13,15 @@
 | 진행 중 | 2 (drill-guard, football-xcom) |
 | 보류 | 0 |
 
+> **2026-09-30 갱신 (#40):** rainy-day 가 **처음으로 출시 조건을 채우고** 닫혔다 — itch.io Restricted · 외부 플레이 1명 · 세 줄 답. 출시 0 → **1**. 진행 중은 drill-guard · football-xcom 둘 그대로.
+
 닫는 시점에 세 프로젝트가 같은 문장을 갖고 있었다: *"미검증 = 실제 플레이 손맛. 아직 아무도 플레이 안 함."* 만드는 능력이 아니라 **만든 뒤의 한 칸**(플레이 → 보여주기 → 올리기)이 비어 있었다는 뜻이다. 다음 사이클의 완료 조건은 그래서 "공개 URL + 타인 플레이 1회"다.
 
 ## 종료 목록
 
 | 프로젝트 | 저장소 | 기간 | 규모 | 무엇이었나 | 왜 멈췄나 | 건진 것 |
 |---|---|---|---|---|---|---|
+| **rainy-day** | [tomhator/rainy-day](https://github.com/tomhator/rainy-day) | 2026-09-11 → 09-30 | 171커밋, gd 5, 티켓 62, 345 checks | 시간을 되돌리는 비. 비를 맞으면 패러독스 게이지가 차고 마지막 안전지대로 롤백, 샤드와 도구는 남는다. 구간 2 · 캠프 · 도구 셋 · 웹 빌드 | **출시 조건을 채우고 닫았다.** 9/30 itch Restricted, 외부 1명 끝까지 클리어. 답: 「흥미롭지만 엄청 재밌지는 않다 · 규칙을 몰라 당황 · 궁금증 부족」. 결정권자가 다음 쁘띠 프로젝트로 | 밸런스 프로브(최고 게이지 눈금) · verify.sh · 티켓 규칙 여섯 · 규칙에서 세계관 역산 → [`rainy-day-postmortem.md`](rainy-day-postmortem.md), knowhow §3-2, §6-2, §9, §10, §11 |
 | **helldiver-lite** | [tomhator/helldiver-lite](https://github.com/tomhator/helldiver-lite) | 2026-07-27 → 08-12 | 115커밋, gd 12 | 솔로 헬다이버즈-라이트. 강하→목표→탈출 60초 버티기. 7/29 Go 판정, 무기 3종·적 4종, 출시일 9/28 | Go 이후 콘텐츠 블록 진입, 8/12 마지막 커밋 후 한 달 무소식. 방향 전환으로 종료 | 스코프 헌법·SCHEDULE 루틴·설계 하한(처치율) → knowhow §2, §3, §5-1·5-2, §7 기획서 사본: [`helldiver-lite-plan.md`](helldiver-lite-plan.md) |
 | **ProjectScavenger** | [tomhator/ProjectScavenger](https://github.com/tomhator/ProjectScavenger) | 2026-06-11 → 07-26 | 336커밋, gd 56 | 익스트랙션 슈터. 적 19병종, 거점·퀘스트·빚 상환, 오염 시스템, 월드맵 | 스코프 폭발. 가드레일(INVARIANTS)이 있었지만 지키던 "핵심"의 정의가 이미 팀 규모였다 | Juice.gd, selftest 습관, STATUS 습관, 텔레그래프 문법, 아트 바이블 → [`scavenger-salvage.md`](scavenger-salvage.md), knowhow §1-7, §5-3, §6-2, §7-4 |
 | **projectMecha** | [tomhator/projectMecha](https://github.com/tomhator/projectMecha) | 2026-04-28 → 06-11 | 160커밋, gd 38 | 메카 파츠 조립 게임. 스캐빈저의 전신 | 기획이 코어 시스템에서 수렴하지 못하고 반복 재설계, 문서 드리프트. README에 DEPRECATED 자체 선언 | GDD.md(재빌드용 기획 정본), 문서 드리프트 사례 → knowhow §1-2·1-4, §4-2·4-3, §5-3 |
@@ -43,3 +46,5 @@
 ```
 > 종료(2026-09-10). 이유와 건진 것은 tomhator/gameDev/docs/closed-projects.md 참조.
 ```
+
+rainy-day 는 종료 안내를 `README.md` 와 `STATUS.md` 첫 줄에 이미 넣었다(2026-09-30). 아카이브만 남았다.

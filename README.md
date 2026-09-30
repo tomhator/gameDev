@@ -9,6 +9,7 @@ gameDev
 ├── docs
 │   ├── knowhow.md            # 닫은 프로젝트들에서 뽑은 노하우 (앞으로의 프로젝트가 먼저 읽는 문서)
 │   ├── closed-projects.md    # 종료 프로젝트 대장 — 무엇·언제·왜·어디·건진 것
+│   ├── rainy-day-postmortem.md  # rainy-day 부검 — 처음으로 「공개 URL + 타인 플레이」 를 채운 프로젝트
 │   ├── backstreet-world.md   # 뒷골목(Backstreet) 세계관 컨셉 회수
 │   ├── jigsaw-snap-idea.md   # 직소 손맛 아이디어 보관
 │   ├── templates/            # 헌법 1장 · 플레이 노트 · 8색 팔레트 (#20 개발 루프)
@@ -18,11 +19,12 @@ gameDev
 └── tools/gif-factory # 맥북 GIF 공장 — 구글 드라이브 녹화 → 홍보용 GIF 자동 생성
 ```
 
-## 프로젝트 현황 (2026-09-10)
+## 프로젝트 현황 (2026-09-30)
 | 상태 | 프로젝트 | 어디 |
 |---|---|---|
 | 진행 | drill-guard — 인크리멘탈 × 디펜스 | `tomhator/drill-guard` |
 | 진행 | football-xcom — 턴제 전술 축구 | `tomhator/football-xcom` |
+| **종료 (완료)** | rainy-day — 시간을 되돌리는 비. itch Restricted · 외부 플레이 1명 · 2026-09-30 종료 | `tomhator/rainy-day` · [`docs/rainy-day-postmortem.md`](docs/rainy-day-postmortem.md) |
 | 종료 | helldiver-lite, jigsaw-snap, ProjectScavenger, projectMecha, project-jigsaw, MagicBookPrototype, BackstreetSample, 1~3월 학습 프로젝트 | `docs/closed-projects.md` |
 
 ## 작업 방식
